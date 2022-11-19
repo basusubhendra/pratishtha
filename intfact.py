@@ -58,7 +58,7 @@ def factorize(fp, param, q):
                 idx2 = 10
             if (pos + idx2)  % 8 == 0:
                 ctr = ctr + 1
-                q.put([get_zero((pos + idx2) / 8) , (pos + idx1) / 8, (pos+idx2) / 8, fp])
+                q.put([get_zero((pos + idx2) / 8) , (pos + idx1) / 8, fp])
                 print(list(q.queue))
                 input("")
         f.seek(pos+1)
