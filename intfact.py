@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 
 import sys
-from mpmath import *
 from threading import *
 from queue import *
+from decimal import *
+from math import *
 num = ""
 
 def characterize(num):
@@ -26,23 +27,12 @@ def match(t1, t2):
     else:
         return False
 
-def get_zero(idx):
-    zero = str(zetazero(idx).imag)
-    idx = zero.index(".")
-    zero = zero[idx - 2:]
-    idx = zero.index(".")
-    zero = zero[idx + 1:]
-    zero = zero[:10]
-    return zero
-
 def factorize(fp, param, q):
     global num
     f=open(fp,"r")
     l = len(num)
     triplets = characterize(num)
     ctr = 0
-    mp.prec=64
-    mp.dps=64
     while True:
         pos = f.tell()
         triplet = str(f.read(3))
@@ -58,7 +48,7 @@ def factorize(fp, param, q):
                 idx2 = 10
             if (pos + idx2)  % 8 == 0:
                 ctr = ctr + 1
-                q.put([get_zero((pos + idx2) / 8) , (pos + idx1) / 8, fp])
+                q.put([Decimal(modf((pos + idx1) / 8)[0]).as_integer_ratio(), fp])
                 print(list(q.queue))
                 input("")
         f.seek(pos+1)
