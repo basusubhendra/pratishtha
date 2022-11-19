@@ -48,13 +48,17 @@ def factorize(fp, param, q):
         triplet = str(f.read(3))
         _triplet_ = triplets[ctr % len(triplets)]
         if match(triplet, _triplet_) == True:
+            idx1 = _triplet_[1]
+            idx1 = int(idx1)
+            if idx1 == 0:
+                idx1 = 10
             idx2 = triplet[1]
             idx2 = int(idx2)
             if idx2 == 0:
                 idx2 = 10
             if (pos + idx2)  % 8 == 0:
                 ctr = ctr + 1
-                q.put([get_zero((pos+idx2) / 8), (pos+idx2) / 8, triplet, _triplet_, fp])
+                q.put([get_zero((pos + idx2) / 8) , (pos + idx1) / 8, (pos+idx2) / 8, fp])
                 print(list(q.queue))
                 input("")
         f.seek(pos+1)
