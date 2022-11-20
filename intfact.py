@@ -29,12 +29,14 @@ def match(t1, t2):
         return False
 
 def get_zero(idx):
+    mp.prec=64
+    mp.dps=64
     zero = str(zetazero(idx).imag)
     i = zero.index(".")
     zero = zero[i - 2:]
     i = zero.index(".")
     zero = zero[i + 1:]
-    zero = zero[:8]
+    zero = zero[:16]
     return zero
 
 def factorize(fp, param, q):
