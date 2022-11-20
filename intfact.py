@@ -56,7 +56,8 @@ def appendToList(L, digit):
             L.append(0)
         L.append(1)
     else:
-        L[-1] = L[-1] + 1
+        if len(L) > 0:
+            L[-1] = L[-1] + 1
     l = len(L)
     if l1[l] > 0 and l2[l] > 0:
         if l in zeros:
