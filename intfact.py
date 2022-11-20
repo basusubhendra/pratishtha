@@ -34,7 +34,7 @@ def get_zero(idx):
     zero = zero[i - 2:]
     i = zero.index(".")
     zero = zero[i + 1:]
-    zero = zero[:11]
+    zero = zero[:8]
     return zero
 
 def factorize(fp, param, q):
