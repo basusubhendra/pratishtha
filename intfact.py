@@ -39,6 +39,10 @@ def get_zero(idx):
     zero = zero[:16]
     return zero
 
+def get_multiplier(d):
+    deficiency = 8 / int(d)
+    return deficiency
+
 def factorize(fp, param, q):
     global num
     f=open(fp,"r")
@@ -50,17 +54,20 @@ def factorize(fp, param, q):
         triplet = str(f.read(3))
         _triplet_ = triplets[ctr % len(triplets)]
         if match(triplet, _triplet_) == True:
-            idx1 = _triplet_[1]
-            idx1 = int(idx1)
-            if idx1 == 0:
-                idx1 = 10
-            idx2 = triplet[1]
-            idx2 = int(idx2)
-            if idx2 == 0:
-                idx2 = 10
+            idx1 = int(_triplet_[1])
+            idx2 = int(triplet[1])
             if (pos + idx2)  % 8 == 0:
                 ctr = ctr + 1
-                q.put([get_zero((pos+idx2) / 8),Decimal(modf((idx1-idx2) / 8)[0]).as_integer_ratio(), fp])
+                zero = get_zero((pos+idx2) / 8)
+                dec = Decimal(modf((idx1 - idx2) / 8)[0]).as_integer_ratio()
+                denominator = int(dec[1])
+                multiplier = get_multiplier(denominator)
+                numerator = multiplier*int(dec[0])
+                if idx1 < idx2:
+                    numerator = 8 + numerator
+                else:
+                    numerator = 7 + numerator
+                q.put([zero[int(numerator)],fp])
                 print(list(q.queue))
                 input("")
         f.seek(pos+1)
