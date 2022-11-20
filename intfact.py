@@ -66,7 +66,7 @@ def appendToList(L, digit):
             if last_index == -1:
                 nzeros = index - 1
             else:
-                nzeros = index - last_index + 1
+                nzeros = index - last_index - 1
             last_index = index
             return True, nzeros
         else:
