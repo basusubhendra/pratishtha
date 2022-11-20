@@ -8,6 +8,9 @@ from math import *
 from mpmath import *
 from zeros import zeros
 num = ""
+l1 = list([])
+l2 = list([])
+last_index = -1
 
 def characterize(num):
     l = len(num)
@@ -44,8 +47,36 @@ def get_multiplier(d):
     deficiency = 8 / int(d)
     return deficiency
 
-def factorize(fp, param, q):
+def appendToList(L, digit):
+    global l1
+    global l2
+    global last_index
+    if digit > 0:
+        for i in range(0, digit-1):
+            L.append(0)
+        L.append(1)
+    else:
+        L[-1] = L[-1] + 1
+    l = len(L)
+    if l1[l] > 0 and l2[l] > 0:
+        if l in zeros:
+            index = zeros.index(l,last_index+1)
+            nzeros = 0
+            if last_index == -1:
+                nzeros = index - 1
+            else:
+                nzeros = index - last_index + 1
+            last_index = index
+            return True, nzeros
+        else:
+            return False, None
+    else:
+        return False, None
+
+def factorize(fp, param, q, L):
     global num
+    global l1
+    global l2
     f=open(fp,"r")
     l = len(num)
     triplets = characterize(num)
@@ -68,9 +99,12 @@ def factorize(fp, param, q):
                     numerator = 8 + numerator
                 else:
                     numerator = 7 + numerator
-                q.put([int(zero[int(numerator)]),fp])
-                print(list(q.queue))
-                input("")
+                digit = int(zero[int(numerator)])
+                q.put([digit,fp])
+                success, factor_snippet = appendToList(L, digit)
+                if success:
+                    input(factor_snippet)
+                #print(list(q.queue))
         f.seek(pos+1)
     f.close()
 
@@ -78,8 +112,8 @@ if __name__ == "__main__":
     num = str(sys.argv[1])
     q1 = Queue()
     q2 = Queue()
-    t1 = Thread(target=factorize, args = ("pi.txt", 0, q1, ))
-    t2 = Thread(target=factorize, args = ("e.txt", 1, q2,  ))
+    t1 = Thread(target=factorize, args = ("pi.txt", 0, q1, l1, ))
+    t2 = Thread(target=factorize, args = ("e.txt", 1, q2, l2,  ))
     t1.start()
     t2.start()
     t1.join()
