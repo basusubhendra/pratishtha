@@ -5,6 +5,7 @@ from threading import *
 from queue import *
 from decimal import *
 from math import *
+from mpmath import *
 num = ""
 
 def characterize(num):
@@ -27,6 +28,15 @@ def match(t1, t2):
     else:
         return False
 
+def get_zero(idx):
+    zero = str(zetazero(idx).imag)
+    i = zero.index(".")
+    zero = zero[i - 2:]
+    i = zero.index(".")
+    zero = zero[i + 1:]
+    zero = zero[:11]
+    return zero
+
 def factorize(fp, param, q):
     global num
     f=open(fp,"r")
@@ -48,7 +58,7 @@ def factorize(fp, param, q):
                 idx2 = 10
             if (pos + idx2)  % 8 == 0:
                 ctr = ctr + 1
-                q.put([Decimal(modf((pos + idx1) / 8)[0]).as_integer_ratio(), fp])
+                q.put([get_zero((pos+idx2) / 8),Decimal(modf((idx1-idx2) / 8)[0]).as_integer_ratio(), fp])
                 print(list(q.queue))
                 input("")
         f.seek(pos+1)
@@ -56,11 +66,11 @@ def factorize(fp, param, q):
 
 if __name__ == "__main__":
     num = str(sys.argv[1])
-    #q1 = Queue()
+    q1 = Queue()
     q2 = Queue()
-    #t1 = Thread(target=factorize, args = ("pi.txt", 0, q1, ))
+    t1 = Thread(target=factorize, args = ("pi.txt", 0, q1, ))
     t2 = Thread(target=factorize, args = ("e.txt", 1, q2,  ))
-    #t1.start()
+    t1.start()
     t2.start()
-    #t1.join()
+    t1.join()
     t2.join()
