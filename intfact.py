@@ -59,9 +59,9 @@ def appendToList(L, digit):
         if len(L) > 0:
             L[-1] = L[-1] + 1
     l = len(L)
-    if l1[l] > 0 and l2[l] > 0:
+    if l > 0 and len(l1) >= l and len(l2) >= l and l1[l-1] > 0 and l2[l-1] > 0:
         if l in zeros:
-            index = zeros.index(l,last_index+1)
+            index = zeros.index(l,last_index+1) + 1
             nzeros = 0
             if last_index == -1:
                 nzeros = index - 1
