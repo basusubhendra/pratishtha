@@ -10,7 +10,6 @@ from zeros import zeros
 num = ""
 l1 = list([])
 l2 = list([])
-last_index = -1
 
 def characterize(num):
     l = len(num)
@@ -50,7 +49,7 @@ def get_multiplier(d):
 def appendToList(L, digit):
     global l1
     global l2
-    global last_index
+    last_index = -1
     if digit > 0:
         for i in range(0, digit-1):
             L.append(0)
@@ -62,13 +61,7 @@ def appendToList(L, digit):
     if l > 0 and len(l1) >= l and len(l2) >= l and l1[l-1] > 0 and l2[l-1] > 0:
         if l in zeros:
             index = zeros.index(l,last_index+1) + 1
-            nzeros = 0
-            if last_index == -1:
-                nzeros = index - 1
-            else:
-                nzeros = index - last_index - 1
-            last_index = index
-            return True, nzeros
+            return True, index
         else:
             return False, None
     else:
