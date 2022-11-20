@@ -104,7 +104,7 @@ def factorize(fp, param, q, L):
                 q.put([digit,fp])
                 success, factor_snippet = appendToList(L, digit)
                 if success:
-                    input(factor_snippet)
+                    input([factor_snippet, len(L)])
                 #print(list(q.queue))
         f.seek(pos+1)
     f.close()
