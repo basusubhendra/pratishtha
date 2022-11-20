@@ -67,7 +67,7 @@ def factorize(fp, param, q):
                     numerator = 8 + numerator
                 else:
                     numerator = 7 + numerator
-                q.put([zero[int(numerator)],fp])
+                q.put([int(zero[int(numerator)]),fp])
                 print(list(q.queue))
                 input("")
         f.seek(pos+1)
