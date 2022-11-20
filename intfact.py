@@ -6,6 +6,7 @@ from queue import *
 from decimal import *
 from math import *
 from mpmath import *
+from zeros import zeros
 num = ""
 
 def characterize(num):
