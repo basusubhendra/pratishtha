@@ -16,7 +16,7 @@ def get_fractional_part(ctr):
     zero = zero[:8]
     return mantissa, zero
 
-def _get_zero_(next_pair, ctr, ptr % 4:
+def _get_zero_(next_pair, ctr, ptr):
         mantissa, zero = get_fractional_part(ctr)
         if mantissa == next_pair:
            return True, zero[ptr*2:ptr*2+2]
