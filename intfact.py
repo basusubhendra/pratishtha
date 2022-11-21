@@ -71,4 +71,4 @@ if __name__ == "__main__":
     num = str(sys.argv[1])
     print(num)
     zeros,triplets, offsets = characterize(num)
-    print(list(zip(zeros,triplets, offsets)))
+    print(list(zip(triplets, zeros, offsets)))
