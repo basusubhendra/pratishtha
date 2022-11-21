@@ -69,6 +69,5 @@ def characterize(num):
 
 if __name__ == "__main__":
     num = str(sys.argv[1])
-    print(num)
     zeros,triplets, offsets = characterize(num)
     print(list(zip(triplets, zeros, offsets)))
