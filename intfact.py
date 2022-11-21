@@ -42,6 +42,7 @@ def characterize(num):
     l = len(num)
     ctr = 0
     triplets = []
+    zeros = []
     offsets = []
     while True:
         triplet = ""
@@ -51,7 +52,8 @@ def characterize(num):
         if mid_element == 0:
             mid_element = 10
         next_pair = triplet[0] + triplet[2]
-        triplets.append(get_zeros(next_pair, mid_element))
+        triplets.append(triplet)
+        zeros.append(get_zeros(next_pair, mid_element))
         ctr = ctr + 1
         delta = (l - 1) - (ctr + 1)
         npairs = delta/2.0
@@ -63,10 +65,10 @@ def characterize(num):
         offsets.append(npairs)
         if ctr + 1 == l - 1:
             break
-    return triplets, offsets
+    return zeros,triplets, offsets
 
 if __name__ == "__main__":
     num = str(sys.argv[1])
     print(num)
-    triplets, offsets = characterize(num)
-    print(list(zip(triplets, offsets)))
+    zeros,triplets, offsets = characterize(num)
+    print(list(zip(zeros,triplets, offsets)))
