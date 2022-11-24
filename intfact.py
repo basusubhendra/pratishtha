@@ -21,7 +21,8 @@ def characterize(rnum):
     last_state = ""
     state = 0
     states = []
-    while nhits < int(ceil(l/2.0)):
+    #while nhits < int(ceil(l/2.0)):
+    while nhits < l:
         nk = int(rnum[count % l])
         line_number = line_number + nk
         _line_ = lines[line_number].lstrip().rstrip()
