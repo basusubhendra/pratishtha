@@ -29,13 +29,11 @@ def characterize(rnum):
         if int(_tuple_) in zeros:
             __nzeros__ = __nzeros__ + 1
             state_description = float(str(modf(Decimal(__nzeros__ / 8.0))[0]))
-            if state == 1:
-                states.append([last_state, state_description])
-                state = 0
-                nhits = nhits + 1
+            states.append(state_description)
             last_state = state_description
         elif _tuple_ == "00":
-            state = 1
+            nhits = nhits + 1
+            states.append("**")
         ptr = (ptr + 1) % 8
         count = count + 1
     f.close()
