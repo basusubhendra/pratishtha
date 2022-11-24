@@ -23,7 +23,7 @@ def encode(ss):
 def _aggregate_(sd):
     return sd.count("0"), sd.count("1")
 
-def characterize(rnum):
+def characterize(rnum, limit):
     l = len(rnum)
     f=open("./stripped_zeros.dat","r")
     lines = f.readlines()
@@ -33,7 +33,7 @@ def characterize(rnum):
     states = []
     nhits = 0
     __nzeros__ = 0
-    while nhits < l:
+    while nhits < limit:
         nk = int(rnum[count % l])
         line_number = line_number + nk
         _line_ = lines[line_number].lstrip().rstrip()
@@ -52,5 +52,6 @@ def characterize(rnum):
 
 if __name__ == "__main__":
     num = str(sys.argv[1])
-    pivots = characterize(num)
+    limit = int(sys.argv[2])
+    pivots = characterize(num, limit)
     print(pivots)
