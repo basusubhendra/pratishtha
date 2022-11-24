@@ -20,7 +20,8 @@ def characterize(rnum):
     last_state = ""
     state = 0
     states = []
-    while True:
+    nhits = 0
+    while nhits < l:
         nk = int(rnum[count % l])
         line_number = line_number + nk
         _line_ = lines[line_number].lstrip().rstrip()
@@ -30,9 +31,9 @@ def characterize(rnum):
             state_description = float(str(modf(Decimal(__nzeros__ / 8.0))[0]))
             states.append(state_description)
             last_state = state_description
+            nhits = nhits + 1
         elif _tuple_ == "00":
             states.append("**")
-            break
         ptr = (ptr + 1) % 8
         count = count + 1
     f.close()
