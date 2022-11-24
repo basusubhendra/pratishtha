@@ -43,6 +43,7 @@ def characterize(rnum, limit):
     _nzeros_ = 0
     _nprimes_ = 0
     pivots = []
+    __nzeros__ = 0
     while nhits < limit:
         nk = int(rnum[count % l])
         line_number = line_number + nk
@@ -55,7 +56,8 @@ def characterize(rnum, limit):
             previous_line_number = line_number + 2
             #zero_pivots.append(_nzeros_)
             #prime_pivots.append(_nprimes_)
-            pivots.append("X")
+            __nzeros__ = __nzeros__ + 1
+            pivots.append(__nzeros__ % 100)
             nhits = nhits + 1
         elif _tuple_ == "00":
             #zero_pivots.append("00")
@@ -71,7 +73,7 @@ if __name__ == "__main__":
     num = str(sys.argv[1])
     limit = int(sys.argv[2])
     #reverse is for analysis
-    pivots = characterize(num, limit)
+    pivots = characterize(num[::-1], limit)
     print(pivots)
     #print(zero_pivots)
     #print(prime_pivots)
