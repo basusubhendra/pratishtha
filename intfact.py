@@ -6,6 +6,23 @@ from math import modf
 from math import ceil
 from zeros import zeros
 
+state_encoding = dict([])
+state_encoding["0.0"] = "000"
+state_encoding["0.125"] = "001"
+state_encoding["0.25"] = "010"
+state_encoding["0.375"] = "011"
+state_encoding["0.5"] = "100"
+state_encoding["0.625"] = "101"
+state_encoding["0.75"] = "110"
+state_encoding["0.875"] = "111"
+
+def encode(ss):
+    global state_encoding
+    return state_encoding[ss]
+
+def _aggregate_(sd):
+    return sd.count("0"), sd.count("1")
+
 def characterize(rnum):
     l = len(rnum)
     f=open("./stripped_zeros.dat","r")
@@ -13,14 +30,9 @@ def characterize(rnum):
     line_number = -1
     count = 0
     ptr = 0
-    previous_line_number = 0
-    _nzeros_ = 0
-    _nprimes_ = 0
-    __nzeros__ = 0
-    last_state = ""
-    state = 0
     states = []
     nhits = 0
+    __nzeros__ = 0
     while nhits < l:
         nk = int(rnum[count % l])
         line_number = line_number + nk
@@ -28,9 +40,8 @@ def characterize(rnum):
         _tuple_ = _line_[ptr:ptr+2]
         if int(_tuple_) in zeros:
             __nzeros__ = __nzeros__ + 1
-            state_description = float(str(modf(Decimal(__nzeros__ / 8.0))[0]))
-            states.append(state_description)
-            last_state = state_description
+            state_description = str(modf(Decimal(__nzeros__ / 8.0))[0])
+            states.append(encode(state_description))
         elif _tuple_ == "00":
             states.append("**")
             nhits = nhits + 1
@@ -41,5 +52,5 @@ def characterize(rnum):
 
 if __name__ == "__main__":
     num = str(sys.argv[1])
-    pivots = characterize(num[::-1])
+    pivots = characterize(num)
     print(pivots)
