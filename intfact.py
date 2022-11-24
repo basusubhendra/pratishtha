@@ -31,9 +31,9 @@ def characterize(rnum):
             state_description = float(str(modf(Decimal(__nzeros__ / 8.0))[0]))
             states.append(state_description)
             last_state = state_description
-            nhits = nhits + 1
         elif _tuple_ == "00":
             states.append("**")
+            nhits = nhits + 1
         ptr = (ptr + 1) % 8
         count = count + 1
     f.close()
