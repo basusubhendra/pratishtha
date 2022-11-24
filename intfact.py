@@ -4,7 +4,7 @@ import sys
 from zeros import zeros
 from primes import primes
 
-def further_characterize(previous_line_number,line_number):
+def _further_characterize_(previous_line_number,line_number):
     f=open("./pi.txt","r")
     g=open("./e.txt","r")
     f.seek(previous_line_number)
