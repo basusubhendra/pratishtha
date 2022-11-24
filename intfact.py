@@ -57,7 +57,7 @@ def characterize(rnum, limit):
             #zero_pivots.append(_nzeros_)
             #prime_pivots.append(_nprimes_)
             __nzeros__ = __nzeros__ + 1
-            pivots.append(__nzeros__ % 100)
+            pivots.append(__nzeros__ / 8.0)
             nhits = nhits + 1
         elif _tuple_ == "00":
             #zero_pivots.append("00")
