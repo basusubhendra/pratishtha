@@ -8,7 +8,7 @@ from zeros import zeros
 
 def characterize(rnum):
     l = len(rnum)
-    f=open("./stripped_zeros.txt","r")
+    f=open("./stripped_zeros.dat","r")
     lines = f.readlines()
     line_number = -1
     count = 0
@@ -21,7 +21,6 @@ def characterize(rnum):
     last_state = ""
     state = 0
     states = []
-    #while nhits < int(ceil(l/2.0)):
     while nhits < l:
         nk = int(rnum[count % l])
         line_number = line_number + nk
