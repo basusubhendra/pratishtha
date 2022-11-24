@@ -10,6 +10,8 @@ def _further_characterize_(previous_line_number,line_number):
     f.seek(previous_line_number)
     g.seek(previous_line_number)
     pos = previous_line_number
+    nzeros = 0
+    nprimes = 0
     while pos < line_number:
         c=str(f.read(1))
         d=str(g.read(1))
