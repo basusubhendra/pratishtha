@@ -22,7 +22,6 @@ def further_characterize(net_hits, l):
     pp = pi[:net_hits]
     ee = e[:net_hits]
     _ee_ = e[:net_hits][::-1]
-    ctr = 1
     mp.prec=28
     mp.dps=28
     states = []
@@ -30,9 +29,6 @@ def further_characterize(net_hits, l):
     for x in list(zip(pp, ee, _ee_)):
         if x[1] == x[2]:
             states.append([get_zero(index), x[0], x[1]])
-            ctr = ctr + 1 
-            if ctr == l + 1:
-                break
         index = index + 1
     return states
 
@@ -59,8 +55,10 @@ def characterize(rnum):
             net_hits = net_hits + 1
             if net_hits in zeros:
                 states = further_characterize(net_hits, l)
-                break
-            nhits = nhits + 1
+                states.append("00")
+                nhits = nhits + 1
+                if nhits == l:
+                    break
         ptr = (ptr + 1) % 8
         count = count + 1
     f.close()
