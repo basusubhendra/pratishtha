@@ -36,7 +36,6 @@ def characterize(rnum):
     ptr = 0
     states = []
     nhits = 0
-    __nzeros__ = 0
     net_hits = 0
     while True:
         nk = int(rnum[count % l])
@@ -45,7 +44,6 @@ def characterize(rnum):
         _tuple_ = _line_[ptr:ptr+2]
         if int(_tuple_) in zeros:
             net_hits = net_hits + 1
-            __nzeros__ = __nzeros__ + 1
         elif _tuple_ == "00":
             net_hits = net_hits + 1
             if net_hits in zeros:
