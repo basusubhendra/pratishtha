@@ -53,5 +53,5 @@ def characterize(rnum, limit):
 if __name__ == "__main__":
     num = str(sys.argv[1])
     limit = int(sys.argv[2])
-    pivots = characterize(num, limit)
+    pivots = characterize(num[::-1], limit)
     print(pivots)
