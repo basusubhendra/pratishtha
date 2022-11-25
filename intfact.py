@@ -11,6 +11,7 @@ def get_zero(ctr):
     zero = str(zetazero(ctr).imag)
     idx = zero.index(".")
     zero = zero[idx-1:idx + 9]
+    zero = zero.replace(".","0")
     return zero
 
 def further_characterize(net_hits):
