@@ -13,17 +13,17 @@ def get_zero(ctr):
     zero = zero[idx-1:idx + 9]
     return zero
 
-def further_characterize(net_hits, l):
+def further_characterize(net_hits):
     pp = pi[:net_hits]
     ee = e[:net_hits]
     _ee_ = e[:net_hits][::-1]
     mp.prec=28
     mp.dps=28
-    states = []
+    states = "" 
     index = 1
     for x in list(zip(pp, ee, _ee_)):
         if x[1] == x[2]:
-            states.append(get_zero(index))
+            states = states + str(get_zero(index))
         index = index + 1
     return states
 
@@ -34,7 +34,7 @@ def characterize(rnum):
     line_number = -1
     count = 0
     ptr = 0
-    states = []
+    states = [] 
     nhits = 0
     net_hits = 0
     while True:
@@ -47,7 +47,7 @@ def characterize(rnum):
         elif _tuple_ == "00":
             net_hits = net_hits + 1
             if net_hits in zeros:
-                states = further_characterize(net_hits, l)
+                states.append(further_characterize(net_hits))
                 states.append("00")
                 nhits = nhits + 1
                 if nhits == l:
