@@ -51,7 +51,7 @@ def characterize(rnum):
                 states.append(further_characterize(net_hits))
                 states.append("00")
                 nhits = nhits + 1
-                if nhits == 2*l:
+                if nhits == l:
                     break
         ptr = (ptr + 1) % 8
         count = count + 1
