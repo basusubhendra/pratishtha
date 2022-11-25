@@ -3,8 +3,6 @@
 import sys
 from mpmath import zetazero
 from mpmath import mp
-from zeros100 import zeros100
-from primes100 import primes100
 from zeros import zeros
 from pi import pi
 from e import e
