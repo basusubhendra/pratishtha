@@ -3,9 +3,6 @@
 import sys
 from mpmath import zetazero
 from mpmath import mp
-from decimal import Decimal
-from math import modf
-from math import ceil
 from zeros100 import zeros100
 from primes100 import primes100
 from zeros import zeros
