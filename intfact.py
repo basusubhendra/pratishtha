@@ -28,7 +28,7 @@ def further_characterize(net_hits, l):
     index = 1
     for x in list(zip(pp, ee, _ee_)):
         if x[1] == x[2]:
-            states.append([get_zero(index), x[0], x[1]])
+            states.append(get_zero(index))
         index = index + 1
     return states
 
