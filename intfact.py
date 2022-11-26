@@ -94,7 +94,8 @@ def factorize(states, p, q):
         l = len(state)
         factor_snippet = _count_(state, p)
         factor = factor + factor_snippet
-    return factor
+    q.put(int(factor,2))
+    return
 
 if __name__ == "__main__":
     num = str(sys.argv[1])
