@@ -7,7 +7,7 @@ from zeros import zeros
 from pi import pi
 from e import e
 from threading import Thread
-from Queue import Queue
+from queue import Queue
 
 def get_zero(ctr):
     zero = str(zetazero(ctr).imag)
@@ -64,29 +64,36 @@ def characterize(rnum):
     return p_states , e_states
 
 def _count_(x, y):
-    for state in x:
-        l = len(state)
-        pp = ""
-        if y == 0:
-            pp = pi[:l]
-        else:
-            pp = e[:l][::-1]
-        param = 0
-        for zz in list(zip(state, pp)):
-            if zz[0] == zz[1] and zz[0] == "0":
-                if param == 1:
-                    snippet = snippet + "1"
-                else:
-                    param = 1
-                    snippet = "1"
-            elif param == 1:
-                param = 0
-                count = count + int(snippet, 2)
-    _snippet_ = bin(count)[2:]
+    pp = ""
+    if y == 0:
+        pp = pi
+    else:
+        pp = e
+    ctr = 0
+    ctr2 = 0
+    l = len(x)
+    count = 0
+    while ctr2 < l:
+        ss = x[ctr2]
+        _pk_ = pp[ctr]
+        if _pk_ == ss and ss == "0":
+            _ctr_ = ctr + 1
+            _ctr2_ = ctr2 + 1
+            _snippet_ = "1"
+            while pp[_ctr_] == x[_ctr2_] and pp[_ctr_] == "0":
+                _snippet_ = _snippet_ + "1"
+                _ctr_ = _ctr_ + 1
+                _ctr2_ = _ctr2_ + 1
+            count = count + int(_snippet_, 2)
+            ctr = _ctr_ - 1
+            ctr2 = _ctr2_ - 1
+        ctr = ctr + 1
+        ctr2 = ctr2 + 1
+    _snippet_ = str(bin(count)[2:])
     if y == 0:
         return _snippet_[::-1]
-    else:
-        return _snippet_ 
+    elif y == 1:
+        return _snippet_
 
 def factorize(states, p, q):
     factor = ""
