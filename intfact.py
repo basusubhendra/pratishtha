@@ -64,7 +64,30 @@ def characterize(rnum):
     return p_states , e_states
 
 def _count_(x, y):
-          
+    for state in x:
+        l = len(state)
+        pp = ""
+        if y == 0:
+            pp = pi[:l]
+        else:
+            pp = e[:l][::-1]
+        param = 0
+        for zz in list(zip(state, pp)):
+            if zz[0] == zz[1] and zz[0] == "0":
+                if param == 1:
+                    snippet = snippet + "1"
+                else:
+                    param = 1
+                    snippet = "1"
+            elif param == 1:
+                param = 0
+                count = count + int(snippet, 2)
+    _snippet_ = bin(count)[2:]
+    if y == 0:
+        return _snippet_[::-1]
+    else:
+        return _snippet_ 
+
 def factorize(states, p, q):
     factor = ""
     for state in states:
