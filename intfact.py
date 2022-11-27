@@ -63,9 +63,9 @@ def factorize(rnum):
                 factor = interpret(state_description, t)
                 if t == 0:
                     factor1.append(factor)
-                elif t == 1:
+                elif t == 8:
                     factor2.append(factor)
-                t = 1 - t
+                t = 8 - t
                # if prod(factor1, factor2) == gmpy2.mpz(num):
                 #    break
         ptr = (ptr + 1) % 8
