@@ -21,7 +21,12 @@ def characterize(net_hits):
     return states
 
 def interpret(state, t):
-    pass
+    if t == 8:
+        state = state[::-1]
+    ctr = 0
+    present_state = state[ctr][0]
+    next_state = state[ctr + 1][0]
+    print(present_state, next_state)
 
 def prod(f1, f2):
     _prod_ = gmpy2.mul(gmpy2.mpz(f1), gmpy2.mpz(f2))
