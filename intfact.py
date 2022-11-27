@@ -2,10 +2,13 @@
 
 import sys
 from gmpy2 import *
+from math import abs
 from zeros import zeros
 from zeros2 import zeros2
 from pi import pi
 from e import e
+from threading import Thread
+from queue import Queue
 
 def characterize(net_hits):
     pp = pi[:net_hits]
@@ -20,8 +23,60 @@ def characterize(net_hits):
         index = index + 1
     return states
 
-def interpret(state, t):
-    pass
+def _match_(x, y):
+    matches = []
+    success = False
+    for zz in list(zip(x, y)):
+        if x == y:
+            success = True
+            matches.append(zz[0])
+    return matches, success
+
+def traverse_zeros(state, param, q):
+    l = len(state)
+    increment = param
+    index = 0
+    if param == 1:
+        index = 0
+    elif param == -1:
+        index = -1
+    zero_index = state[index][0]
+    next_zero_index = zero_index 
+    if (index + increment) < l:
+        next_zero_index = state[index + increment][0]
+    else:
+        break
+    pivot = state[index][2]
+    matching_digits = []
+    while True:
+        zero_index = zero_index + increment
+        zero = zeros2[zero_index-1]
+        matching_digits, success = _match_(zero[2], pivot)
+        if success:
+            break
+        if zero_index == next_zero_index:
+            zero_index = next_zero_index
+            pivot = zero[2]
+            index = index + increment
+            if index < l:
+                next_zero_index = state[index][0]
+            else:
+                break
+    q.put(matching_digits)
+    return
+
+def interpret(state):
+    q = Queue()
+    t1 = Thread(target=traverse_zeros, args = (state, 1, q,  ))
+    t2 = Thread(target=traverse_zeros, args = (state, -1, q,  ))
+    t1.run()
+    t2.run()
+    t1.join()
+    t2.join()
+    while not q.empty():
+        print(q.get())
+    input("Enter any key to continue...")
+    return None
 
 def prod(f1, f2):
     _prod_ = gmpy2.mul(gmpy2.mpz(f1), gmpy2.mpz(f2))
