@@ -74,9 +74,18 @@ def interpret(state):
     t2.start()
     t1.join()
     t2.join()
+    contents = []
     while not q.empty():
-        print(q.get())
-    input("Enter any key to continue...")
+        contents.append(q.get())
+    success = False
+    for x in contents:
+        if '0' in x:
+            success = True
+            break
+    if success:
+        print(x[0])
+        print(x[1])
+        input("Enter any key to continue...")
     return None
 
 def prod(f1, f2):
