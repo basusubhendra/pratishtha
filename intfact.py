@@ -2,7 +2,7 @@
 
 import sys
 from gmpy2 import *
-from zeros2 import zeros2
+from stripped_zeros import stripped_zeros
 
 def prod(f1, f2):
     _prod_ = gmpy2.mul(gmpy2.mpz(f1), gmpy2.mpz(f2))
@@ -25,7 +25,7 @@ def factorize(rnum):
         _line_ = lines[line_number].lstrip().rstrip()
         _tuple_ = _line_[ptr:ptr+2]
         if _tuple_ == "00":
-            state_description = zeros2[line_number]
+            state_description = stripped_zeros[line_number]
             input(state_description)
             print("!!==================!!")
             #if prod(factor1, factor2) == gmpy2.mpz(num):
