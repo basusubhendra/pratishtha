@@ -25,10 +25,12 @@ def characterize(net_hits):
 def _match_(x, y):
     matches = []
     success = False
+    ctr = 0
     for zz in list(zip(x, y)):
         if zz[0] == zz[1]:
             success = True
-            matches.append(zz[0])
+            matches.append([ctr, zz[0]])
+        ctr = ctr + 1
     return matches, success
 
 def traverse_zeros(state, param, q):
@@ -47,14 +49,15 @@ def traverse_zeros(state, param, q):
         return
     pivot = state[index][2]
     matching_digits = []
+    _matches_ = []
     while True:
         zero_index = zero_index + increment
-        if zero_index <= 0:
+        if zero_index <= 0 or zero_index > state[-1][0]:
             break
         zero = zeros2[zero_index-1]
         matching_digits, success = _match_(zero[1], pivot)
         if success:
-            break
+            _matches_.append(matching_digits)
         if zero_index == next_zero_index:
             zero_index = next_zero_index
             pivot = zero[1]
@@ -63,7 +66,7 @@ def traverse_zeros(state, param, q):
                 next_zero_index = state[index][0]
             else:
                 break
-    q.put(matching_digits)
+    q.put(_matches_)
     return
 
 def interpret(state):
@@ -74,29 +77,9 @@ def interpret(state):
     t2.start()
     t1.join()
     t2.join()
-    contents = []
     while not q.empty():
-        contents.append(q.get())
-    if len(contents[0]) == len(contents[1]) and len(contents[0]) == 1 and contents[0] == '0':
-        print(contents[0])
-        print(contents[1])
-        input("Enter any key to continue...")
-    elif len(contents[0]) > 1:
-        prev_val = contents[0][0]
-        for x in contents[0][1:]:
-            if prev_val == x and prev_val == '0':
-                print(contents[0])
-                print(contents[1])
-                input("Enter any key to continue...")
-            prev_val = x
-    elif len(contents[1]) > 1:
-        prev_val = contents[1][0]
-        for x in contents[1][1:]:
-            if prev_val == x and prev_val == '0':
-                print(contents[0])
-                print(contents[1])
-                input("Enter any key to continue...")
-            prev_val = x
+        print(q.get())
+    input("<=======================>")
     return None
 
 def prod(f1, f2):
@@ -122,11 +105,11 @@ def factorize(rnum):
         if int(_tuple_) in zeros:
             net_hits = net_hits + 1
         elif _tuple_ == "00":
-            if net_hits in zeros:
-                state_description = characterize(net_hits)
-                factor = interpret(state_description)
-               # if prod(factor1, factor2) == gmpy2.mpz(num):
-                #    break
+            state_description = characterize(net_hits)
+            factor = interpret(state_description)
+            print("!!==================!!")
+            #if prod(factor1, factor2) == gmpy2.mpz(num):
+            #    break
         ptr = (ptr + 1) % 8
         count = count + 1
     f.close()
