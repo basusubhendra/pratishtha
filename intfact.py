@@ -13,7 +13,7 @@ def get_zero(ctr):
     idx = zero.index(".")
     frac = zero[idx:idx + 9]
     mantissa = zero[:idx]
-    return mantissa, frac
+    return mantissa, frac[1:]
 
 def characterize(net_hits):
     pp = pi[:net_hits]
