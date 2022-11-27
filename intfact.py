@@ -30,7 +30,7 @@ def characterize(net_hits):
         index = index + 1
     return states
 
-def interpret(state):
+def interpret(state, t):
     pass
 
 def factorize(rnum):
@@ -43,6 +43,7 @@ def factorize(rnum):
     net_hits = 0
     prod = gmpy2.mpz("1")
     factors = []
+    t = 0
     while True:
         nk = int(rnum[count % l])
         line_number = line_number + nk
@@ -54,7 +55,8 @@ def factorize(rnum):
             if net_hits in zeros:
                 state_description = characterize(net_hits)
                 input(state_description)
-                factor = interpret(state_description)
+                factor = interpret(state_description, t)
+                t = 1 - t
                 #factors.append(int(factor[::-1], 2))
                 #prod = gmpy2.mul(prod, gmpy2.mpz(str(factor)))
                 #if prod == gmpy2.mpz(num):
