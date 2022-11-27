@@ -6,8 +6,6 @@ from mpmath import mp
 from zeros import zeros
 from pi import pi
 from e import e
-from threading import Thread
-from queue import Queue
 
 def get_zero(ctr):
     zero = str(zetazero(ctr).imag)
