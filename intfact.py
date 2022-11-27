@@ -21,13 +21,12 @@ def further_characterize(net_hits):
     _ee_ = e[:net_hits][::-1]
     mp.prec=28
     mp.dps=28
-    states = "" 
+    states = [] 
     index = 1
     for x in list(zip(pp, ee, _ee_)):
         if x[1] == x[2]:
             zero = str(get_zero(index))
-            states = states + zero[1:]
-            break
+            states.append(zero[1:])
         index = index + 1
     return states
 
@@ -39,6 +38,8 @@ def characterize(rnum):
     count = 0
     ptr = 0
     net_hits = 0
+    nhits = 0
+    states = []
     while True:
         nk = int(rnum[count % l])
         line_number = line_number + nk
@@ -49,10 +50,14 @@ def characterize(rnum):
         elif _tuple_ == "00":
             if net_hits in zeros:
                 state_description = further_characterize(net_hits)
-                f.close()
-                return state_description
+                states.append(state_description)
+                nhits = nhits + 1
+                if nhits == l:
+                    break
         ptr = (ptr + 1) % 8
         count = count + 1
+    f.close()
+    return states
 
 def _count_(x, y):
     pp = ""
