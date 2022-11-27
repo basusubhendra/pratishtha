@@ -77,15 +77,26 @@ def interpret(state):
     contents = []
     while not q.empty():
         contents.append(q.get())
-    success = False
-    for x in contents:
-        if '0' in x:
-            success = True
-            break
-    if success:
-        print(x[0])
-        print(x[1])
+    if len(contents[0]) == len(contents[1]) and len(contents[0]) == 1 and contents[0] == '0':
+        print(contents[0])
+        print(contents[1])
         input("Enter any key to continue...")
+    elif len(contents[0]) > 1:
+        prev_val = contents[0][0]
+        for x in contents[0][1:]:
+            if prev_val == x and prev_val == '0':
+                print(contents[0])
+                print(contents[1])
+                input("Enter any key to continue...")
+            prev_val = x
+    elif len(contents[1]) > 1:
+        prev_val = contents[1][0]
+        for x in contents[1][1:]:
+            if prev_val == x and prev_val == '0':
+                print(contents[0])
+                print(contents[1])
+                input("Enter any key to continue...")
+            prev_val = x
     return None
 
 def prod(f1, f2):
