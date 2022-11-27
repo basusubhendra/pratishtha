@@ -26,7 +26,7 @@ def characterize(net_hits):
     for x in list(zip(pp, ee, _ee_)):
         if x[1] == x[2]:
             mantissa, frac = get_zero(index)
-            states.append([int(mantissa), frac])
+            states.append([index, int(mantissa), frac])
         index = index + 1
     return states
 
