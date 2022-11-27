@@ -4,23 +4,6 @@ import sys
 from gmpy2 import *
 from zeros import zeros100
 from zeros2 import zeros2
-from pi import pi
-from e import e
-from threading import Thread
-from queue import Queue
-
-def characterize(net_hits):
-    pp = pi[:net_hits]
-    ee = e[:net_hits]
-    _ee_ = e[:net_hits][::-1]
-    states = [] 
-    index = 0
-    for x in list(zip(pp, ee, _ee_)):
-        if x[1] == x[2]:
-            zero = zeros2[index]
-            states.append(zero[1])
-        index = index + 1
-    return states
 
 def prod(f1, f2):
     _prod_ = gmpy2.mul(gmpy2.mpz(f1), gmpy2.mpz(f2))
@@ -45,7 +28,7 @@ def factorize(rnum):
         if int(_tuple_) in zeros100:
             net_hits = net_hits + 1
         elif _tuple_ == "00":
-            state_description = characterize(net_hits)
+            state_description = zeros2[line_number][1]
             input(state_description)
             print("!!==================!!")
             #if prod(factor1, factor2) == gmpy2.mpz(num):
