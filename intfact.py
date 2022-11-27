@@ -1,32 +1,22 @@
 #!/usr/bin/python3
 
 import sys
-from mpmath import zetazero
-from mpmath import mp
 from gmpy2 import *
 from zeros import zeros
+from zeros2 import zeros2
 from pi import pi
 from e import e
-
-def get_zero(ctr):
-    zero = str(zetazero(ctr).imag)
-    idx = zero.index(".")
-    frac = zero[idx:idx + 9]
-    mantissa = zero[:idx]
-    return mantissa, frac[1:]
 
 def characterize(net_hits):
     pp = pi[:net_hits]
     ee = e[:net_hits]
     _ee_ = e[:net_hits][::-1]
-    mp.prec=28
-    mp.dps=28
     states = [] 
-    index = 1
+    index = 0
     for x in list(zip(pp, ee, _ee_)):
         if x[1] == x[2]:
-            mantissa, frac = get_zero(index)
-            states.append([index, int(mantissa), frac])
+            zero = zeros2[index]
+            states.append([index + 1, zero[0], zero[1]])
         index = index + 1
     return states
 
