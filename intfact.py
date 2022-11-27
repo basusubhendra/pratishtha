@@ -29,7 +29,7 @@ def factorize(rnum):
             net_hits = net_hits + 1
         elif _tuple_ == "00":
             state_description = zeros2[line_number][1]
-            input(state_description)
+            input([ptr,state_description])
             print("!!==================!!")
             #if prod(factor1, factor2) == gmpy2.mpz(num):
             #    break
