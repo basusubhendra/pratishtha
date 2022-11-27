@@ -79,6 +79,7 @@ def interpret(state):
     t2.join()
     while not q.empty():
         print(q.get())
+        print("%%%%%%%")
     input("<=======================>")
     return None
 
