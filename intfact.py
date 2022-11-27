@@ -21,12 +21,7 @@ def characterize(net_hits):
     return states
 
 def interpret(state, t):
-    if t == 8:
-        state = state[::-1]
-    ctr = 0
-    present_state = state[ctr][0]
-    next_state = state[ctr + 1][0]
-    print(present_state, next_state)
+    pass
 
 def prod(f1, f2):
     _prod_ = gmpy2.mul(gmpy2.mpz(f1), gmpy2.mpz(f2))
@@ -43,7 +38,6 @@ def factorize(rnum):
     prod = gmpy2.mpz("1")
     factor1 = []
     factor2 = []
-    t = 0
     while True:
         nk = int(rnum[count % l])
         line_number = line_number + nk
@@ -55,12 +49,7 @@ def factorize(rnum):
             if net_hits in zeros:
                 state_description = characterize(net_hits)
                 input(state_description)
-                factor = interpret(state_description, t)
-                if t == 0:
-                    factor1.append(factor)
-                elif t == 8:
-                    factor2.append(factor)
-                t = 8 - t
+                factor = interpret(state_description)
                # if prod(factor1, factor2) == gmpy2.mpz(num):
                 #    break
         ptr = (ptr + 1) % 8
