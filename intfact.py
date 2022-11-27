@@ -22,67 +22,6 @@ def characterize(net_hits):
         index = index + 1
     return states
 
-def _match_(x, y):
-    matches = []
-    success = False
-    ctr = 0
-    for zz in list(zip(x, y)):
-        if zz[0] == zz[1]:
-            success = True
-            matches.append([ctr, zz[0]])
-        ctr = ctr + 1
-    return matches, success
-
-def traverse_zeros(state, param, q):
-    l = len(state)
-    increment = param
-    index = 0
-    if param == 1:
-        index = 0
-    elif param == -1:
-        index = -1
-    zero_index = state[index][0]
-    next_zero_index = zero_index 
-    if abs(index + increment) < (l - 1):
-        next_zero_index = state[index + increment][0]
-    else:
-        return
-    pivot = state[index][2]
-    matching_digits = []
-    _matches_ = []
-    while True:
-        zero_index = zero_index + increment
-        if zero_index <= 0 or zero_index > state[-1][0]:
-            break
-        zero = zeros2[zero_index-1]
-        matching_digits, success = _match_(zero[1], pivot)
-        if success:
-            _matches_.append(matching_digits)
-        if zero_index == next_zero_index:
-            zero_index = next_zero_index
-            pivot = zero[1]
-            index = index + increment
-            if abs(index) < (l - 1):
-                next_zero_index = state[index][0]
-            else:
-                break
-    q.put(_matches_)
-    return
-
-def interpret(state):
-    q = Queue()
-    t1 = Thread(target=traverse_zeros, args = (state, 1, q,  ))
-    t2 = Thread(target=traverse_zeros, args = (state, -1, q,  ))
-    t1.start()
-    t2.start()
-    t1.join()
-    t2.join()
-    while not q.empty():
-        print(q.get())
-        print("%%%%%%%")
-    input("<=======================>")
-    return None
-
 def prod(f1, f2):
     _prod_ = gmpy2.mul(gmpy2.mpz(f1), gmpy2.mpz(f2))
     return str(_prod_)
@@ -107,7 +46,7 @@ def factorize(rnum):
             net_hits = net_hits + 1
         elif _tuple_ == "00":
             state_description = characterize(net_hits)
-            factor = interpret(state_description)
+            input(state_description)
             print("!!==================!!")
             #if prod(factor1, factor2) == gmpy2.mpz(num):
             #    break
