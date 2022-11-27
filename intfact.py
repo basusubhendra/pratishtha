@@ -33,6 +33,10 @@ def characterize(net_hits):
 def interpret(state, t):
     pass
 
+def prod(f1, f2):
+    _prod_ = gmpy2.mul(gmpy2.mpz(f1), gmpy2.mpz(f2))
+    return str(_prod_)
+
 def factorize(rnum):
     l = len(rnum)
     f=open("./stripped_zeros.dat","r")
@@ -42,7 +46,8 @@ def factorize(rnum):
     ptr = 0
     net_hits = 0
     prod = gmpy2.mpz("1")
-    factors = []
+    factor1 = []
+    factor2 = []
     t = 0
     while True:
         nk = int(rnum[count % l])
@@ -56,10 +61,12 @@ def factorize(rnum):
                 state_description = characterize(net_hits)
                 input(state_description)
                 factor = interpret(state_description, t)
+                if t == 0:
+                    factor1.append(factor)
+                elif t == 1:
+                    factor2.append(factor)
                 t = 1 - t
-                #factors.append(int(factor[::-1], 2))
-                #prod = gmpy2.mul(prod, gmpy2.mpz(str(factor)))
-                #if prod == gmpy2.mpz(num):
+               # if prod(factor1, factor2) == gmpy2.mpz(num):
                 #    break
         ptr = (ptr + 1) % 8
         count = count + 1
