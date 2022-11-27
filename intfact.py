@@ -26,7 +26,7 @@ def factorize(rnum):
         _tuple_ = _line_[ptr:ptr+2]
         if _tuple_ == "00":
             state_description = zeros2[line_number]
-            input([ptr,state_description])
+            input(state_description)
             print("!!==================!!")
             #if prod(factor1, factor2) == gmpy2.mpz(num):
             #    break
