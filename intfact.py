@@ -2,7 +2,6 @@
 
 import sys
 from gmpy2 import *
-from math import abs
 from zeros import zeros
 from zeros2 import zeros2
 from pi import pi
@@ -27,7 +26,7 @@ def _match_(x, y):
     matches = []
     success = False
     for zz in list(zip(x, y)):
-        if x == y:
+        if zz[0] == zz[1]:
             success = True
             matches.append(zz[0])
     return matches, success
@@ -42,23 +41,25 @@ def traverse_zeros(state, param, q):
         index = -1
     zero_index = state[index][0]
     next_zero_index = zero_index 
-    if (index + increment) < l:
+    if abs(index + increment) < (l - 1):
         next_zero_index = state[index + increment][0]
     else:
-        break
+        return
     pivot = state[index][2]
     matching_digits = []
     while True:
         zero_index = zero_index + increment
+        if zero_index <= 0:
+            break
         zero = zeros2[zero_index-1]
-        matching_digits, success = _match_(zero[2], pivot)
+        matching_digits, success = _match_(zero[1], pivot)
         if success:
             break
         if zero_index == next_zero_index:
             zero_index = next_zero_index
-            pivot = zero[2]
+            pivot = zero[1]
             index = index + increment
-            if index < l:
+            if abs(index) < (l - 1):
                 next_zero_index = state[index][0]
             else:
                 break
@@ -69,8 +70,8 @@ def interpret(state):
     q = Queue()
     t1 = Thread(target=traverse_zeros, args = (state, 1, q,  ))
     t2 = Thread(target=traverse_zeros, args = (state, -1, q,  ))
-    t1.run()
-    t2.run()
+    t1.start()
+    t2.start()
     t1.join()
     t2.join()
     while not q.empty():
@@ -103,7 +104,6 @@ def factorize(rnum):
         elif _tuple_ == "00":
             if net_hits in zeros:
                 state_description = characterize(net_hits)
-                input(state_description)
                 factor = interpret(state_description)
                # if prod(factor1, factor2) == gmpy2.mpz(num):
                 #    break
@@ -115,4 +115,3 @@ def factorize(rnum):
 if __name__ == "__main__":
     num = str(sys.argv[1])
     factors = factorize(num)
-    print(factors)
