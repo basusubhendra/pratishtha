@@ -2,7 +2,6 @@
 
 import sys
 from gmpy2 import *
-from zeros import zeros100
 from zeros2 import zeros2
 
 def prod(f1, f2):
@@ -25,9 +24,7 @@ def factorize(rnum):
         line_number = line_number + nk
         _line_ = lines[line_number].lstrip().rstrip()
         _tuple_ = _line_[ptr:ptr+2]
-        if int(_tuple_) in zeros100:
-            net_hits = net_hits + 1
-        elif _tuple_ == "00":
+        if _tuple_ == "00":
             state_description = zeros2[line_number][1]
             input([ptr,state_description])
             print("!!==================!!")
