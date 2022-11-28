@@ -99,7 +99,7 @@ def factorize(rnum):
         ptr = (ptr + 1) % 8
         count = count + 1
     f.close()
-    return states
+    return factors
 
 if __name__ == "__main__":
     num = str(sys.argv[1])
