@@ -7,9 +7,13 @@ from e import e
 from threading import Thread
 from queue import Queue
 
-def prod(f1, f2):
-    _prod_ = gmpy2.mul(gmpy2.mpz(f1), gmpy2.mpz(f2))
-    return str(_prod_)
+def prod(factors):
+    if len(factors) == 0:
+        return "0"
+    prod = gmpy2.mpz("1")
+    for x in factors:
+        prod = gmpy2.mul(prod, gmpy2.mpz(str(x)))
+    return str(prod)
 
 def _match_(line, pp, param, q):
     succ = 1
@@ -90,9 +94,8 @@ def factorize(rnum):
                 ctr = ctr + 3
             else:
                 ctr = ctr + 3
-            print("!!==================!!")
-            #if prod(factor1, factor2) == gmpy2.mpz(num):
-            #    break
+            if prod(factors) == gmpy2.mpz(num):
+                break
         ptr = (ptr + 1) % 8
         count = count + 1
     f.close()
