@@ -1,26 +1,27 @@
 #!/usr/bin/python3
 
 import sys
-from gmpy2 import *
+import gmpy2
 from pi import pi
 from e import e
 from threading import Thread
 from queue import Queue
 
-def prod(factors):
+def _prod_(factors):
     if len(factors) == 0:
         return "0"
     prod = gmpy2.mpz("1")
     for x in factors:
         prod = gmpy2.mul(prod, gmpy2.mpz(str(x)))
-    return str(prod)
+    return prod
 
 def _match_(line, pp, param, q):
     succ = 1
     for x in pp:
-        if not x in pp:
+        if not x in line:
             succ = None
             break
+    input([line, pp, param, succ])
     q.put([param, succ])
     return
 
@@ -37,6 +38,7 @@ def divisibleBy(num, factor):
 
 def factorize(rnum):
     l = len(rnum)
+    bnum = str(bin(int(rnum))[2:])
     f=open("./stripped_zeros.dat","r")
     lines = f.readlines()
     line_number = -1
@@ -47,11 +49,13 @@ def factorize(rnum):
     factor1 = []
     factor2 = []
     nmatches1 = 0
-    namtches2 = 0
+    nmatches2 = 0
     ctr = 0
+    synth_vector = ""
     factors = []
     factor = ""
     offset = 0
+    t = 0
     while True:
         nk = int(rnum[count % l])
         line_number = line_number + nk
@@ -70,22 +74,35 @@ def factorize(rnum):
                 c.append(q.get())
             input(c)
             if c[0][1] != None and c[1][1] != None:
+                if t == 0:
+                    pass
+                else:
+                    m = nmatches1
+                    nmatches1 = nmatches2
+                    nmatches2 = m
+                input([nmatches1, nmatches2])
+                synth_vector = str(bin(nmatches1)[2:])
                 ctr = 0
-                synth_vector = synth_vector + str(bin(nmatches1)[2:])
-                factor = factor + str(bin(nmatches2[::-1])[2:])
-                dec_factor = int(factor, 2)
+                factor = factor + str(bin(nmatches2)[2:])
+                dec_factor = int(factor[::-1], 2)
                 if divisibleBy(rnum, dec_factor) == True:
                     factors.append(dec_factor)
                     factor = ""
-                if synth_vector in str(bin(rnum)[2:])[::-1][offset:]:
-                    index = str(bin(rnum)[2:])[::-1][offset:].index(synth_vector)
-                    if index == 0:
+                if synth_vector in bnum:
+                    index = bnum.index(synth_vector)
+                    if index == offset:
                         offset = offset + len(synth_vector)
-                        if offset == l:
+                        if offset == len(bnum):
                             break
+                    else:
+                        print(rnum + " is a prime number.")
+                        sys.exit(0)
                 else:
                     print(rnum + " is a prime number.")
                     sys.exit(0)
+                nmatches1 = 0
+                nmatches2 = 0
+                t = 1 - t
             elif c[0][1] != None:
                 nmatches1 = nmatches1 + 1
                 ctr = ctr + 3
@@ -94,7 +111,10 @@ def factorize(rnum):
                 ctr = ctr + 3
             else:
                 ctr = ctr + 3
-            if prod(factors) == gmpy2.mpz(num):
+            nz = gmpy2.mpz(num)
+            product = _prod_(factors)
+            input([product, nz])
+            if product == nz:
                 break
         ptr = (ptr + 1) % 8
         count = count + 1
