@@ -56,6 +56,7 @@ def factorize(rnum):
     factor = ""
     offset = 0
     t = 0
+    _states_=[]
     while True:
         nk = int(rnum[count % l])
         line_number = line_number + nk
@@ -63,6 +64,7 @@ def factorize(rnum):
         _tuple_ = _line_[ptr:ptr+2]
         if _tuple_ == "00":
             q = Queue()
+            _states_.append(_line_)
             t1 = Thread(target=_match_, args=(_line_, pi[ctr:ctr + 5], 0, q,  ))
             t2 = Thread(target=_match_, args=(_line_, e[ctr:ctr + 5], 1, q,  ))
             t1.start()
@@ -93,6 +95,10 @@ def factorize(rnum):
                     if index == offset:
                         offset = offset + len(synth_vector)
                         if offset == len(bnum):
+                            _states_ = _states_[::-1]
+                            _ctr_ = 0
+                            for ss in _states_:
+                                input([e[ctr:ctr + 5],ss,pi[ctr:ctr+5]])
                             break
                     else:
                         print(rnum + " is a prime number.")
