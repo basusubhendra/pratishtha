@@ -21,7 +21,7 @@ def _match_(line, pp, param, q):
         if not x in line:
             succ = None
             break
-    input([line, pp, param, succ])
+    #input([line, pp, param, succ])
     q.put([param, succ])
     return
 
@@ -72,7 +72,7 @@ def factorize(rnum):
             c = []
             while not q.empty():
                 c.append(q.get())
-            input(c)
+            #input(c)
             if c[0][1] != None and c[1][1] != None:
                 if t == 0:
                     pass
@@ -80,7 +80,7 @@ def factorize(rnum):
                     m = nmatches1
                     nmatches1 = nmatches2
                     nmatches2 = m
-                input([nmatches1, nmatches2])
+                #input([nmatches1, nmatches2])
                 synth_vector = str(bin(nmatches1)[2:])
                 ctr = 0
                 factor = factor + str(bin(nmatches2)[2:])
@@ -113,7 +113,7 @@ def factorize(rnum):
                 ctr = ctr + 3
             nz = gmpy2.mpz(num)
             product = _prod_(factors)
-            input([product, nz])
+            #input([product, nz])
             if product == nz:
                 break
         ptr = (ptr + 1) % 8
