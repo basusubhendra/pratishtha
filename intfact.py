@@ -40,28 +40,31 @@ def factorize(rnum):
         nk = int(rnum[count % l])
         line_number = line_number + nk
         _line_ = get_zero(line_number) 
-        _tuple_ = _line_[ptr:ptr+2]
-        if _tuple_ == "00":
-            _pp_ = pi[line_number]
-            _ee_ = e[line_number]
-            residue_pi.append(int(_pp_))
-            residue_e.append(int(_ee_))
-            index = 0
-            residue_pi = sorted(residue_pi)
-            residue_e = sorted(residue_e)
-            for x in residue_pi:
-                if str(x) in _line_[1:]:
-                    del residue_pi[index]
-                index = index + 1
-            index = 0
-            for x in residue_e:
-                if str(x) in _line_[1:]:
-                    del residue_e[index]
-                index = index + 1
-            if len(residue_pi) == len(residue_e) and len(residue_pi) == 0:
-                input([line_number, residue_pi, residue_e])
-            elif len(residue_pi) > 0 and sorted(residue_pi) == sorted(residue_e):
-                input([line_number, residue_pi, residue_e])
+        pp0 = pi[line_number-1]
+        pp2 = pi[line_number+1]
+        ee0 = e[line_number-1]
+        ee2 = e[line_number+1]
+        if (pp0 in _line_ or pp2 in _line_) and (ee0 in _line_ or ee2 in _line_):
+        _pp_ = pi[line_number]
+        _ee_ = e[line_number]
+        residue_pi.append(int(_pp_))
+        residue_e.append(int(_ee_))
+        index = 0
+        residue_pi = sorted(residue_pi)
+        residue_e = sorted(residue_e)
+        for x in residue_pi:
+            if str(x) in _line_[1:]:
+                del residue_pi[index]
+            index = index + 1
+        index = 0
+        for x in residue_e:
+            if str(x) in _line_[1:]:
+                del residue_e[index]
+            index = index + 1
+        if len(residue_pi) == len(residue_e) and len(residue_pi) == 0:
+            input([line_number, residue_pi, residue_e])
+        elif len(residue_pi) > 0 and sorted(residue_pi) == sorted(residue_e):
+            input([line_number, residue_pi, residue_e])
         ptr = (ptr + 1) % 8
         count = count + 1
     return
