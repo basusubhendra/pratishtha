@@ -31,7 +31,7 @@ def get_zero(i):
 
 def _match_(line, pp, param, q):
     succ = 0
-    if pp[0] in line or pp[2] in line:
+    if pp[0] in line[1:] or pp[2] in line[1:]:
         succ = 1
     else:
         succ = 0
