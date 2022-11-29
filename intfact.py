@@ -20,7 +20,7 @@ def get_zero(i):
     z = z[:idx+9]
     z=z.replace(".","0")
     return z
-    """
+"""
 
 def get_zero(i):
     f=open("./stripped_zeros.dat","r")
@@ -28,15 +28,6 @@ def get_zero(i):
     f.close()
     i = i - 1
     return lines[i].lstrip().rstrip()
-
-def _match_(line, pp, param, q):
-    succ = 0
-    if pp[0] in line[1:] or pp[2] in line[1:]:
-        succ = 1
-    else:
-        succ = 0
-    q.put([param, succ])
-    return
 
 def factorize(rnum):
     l = len(rnum)
@@ -51,16 +42,6 @@ def factorize(rnum):
         _line_ = get_zero(line_number) 
         _tuple_ = _line_[ptr:ptr+2]
         if _tuple_ == "00":
-            q = Queue()
-            t1 = Thread(target=_match_, args=(_line_, pi[line_number-1:line_number+2], 0, q,  ))
-            t2 = Thread(target=_match_, args=(_line_, e[line_number-1:line_number+2], 1, q,  ))
-            t1.start()
-            t2.start()
-            t1.join()
-            t2.join()
-            c = []
-            while not q.empty():
-                c.append(q.get())
             _pp_ = pi[line_number]
             _ee_ = e[line_number]
             residue_pi.append(int(_pp_))
