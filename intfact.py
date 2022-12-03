@@ -92,10 +92,7 @@ def factorize(triplets, num):
                 if interval > 0:
                     if interval == 2:
                         break
-                    elif interval % 8 == 0:
-                        interval = int(interval / 8)
-                    else:
-                        interval = 0
+                    interval = int(interval / 8)
                 state = 0
                 interval = interval + 1
             elif len(residue_set) > 0 and state == 0:
