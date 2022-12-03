@@ -37,7 +37,7 @@ def mutual_exclusion(pp, ee):
         if not x in ee:
             if not x in excl_set:
                 excl_set.append(x)
-    return sorted(excl_set)
+    return excl_set
 
 def _mask_(pivot, mask, residue_set):
     if not pivot in residue_set:
@@ -118,6 +118,7 @@ if __name__ == "__main__":
         print("Stage 2. Beginning of Factorization.")
         with CodeTimer('Mutexes'):
             stages = find_mutual_exclusions(triplets, num, nstages)
-            print(stages)
+            for s in stages:
+                input(s)
         with CodeTimer('Factorize'):
             factor1, factor2 = factorize(stages)
