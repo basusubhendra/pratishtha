@@ -58,6 +58,8 @@ def _mask1_(pivot, mask, residue_set):
 def factorize(triplets, num):
     fp = open("./pi.txt","r")
     fe = open("./e.txt","r")
+    fp.seek(2)
+    fe.seek(2)
     ctr = 0
     l = len(triplets)
     residue_set = []
@@ -89,7 +91,7 @@ def factorize(triplets, num):
                 lower_factor = lower_factor + str(interval)[::-1]
                 interval = 0
                 state = 1
-            else:
+            elif len(residue_set) > 0:
                 state = 0
                 interval = interval + 1
             fast_counter = fast_counter + 1
