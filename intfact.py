@@ -13,7 +13,7 @@ def characterize(num, precision):
         for i in range(0, 3):
             triplet = triplet + num[(ctr + i) % l]
         score = triplet[0] + triplet[2] + "." + triplet[1]
-        if score == 0.0:
+        if score == "00.0":
             triplets.append("00.0")
         else:
             triplets.append(str(mpmath.log(score)))
