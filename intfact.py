@@ -35,11 +35,25 @@ def characterize(num, precision):
             break
     return triplets
 
-def _mask0_(pivot, pp, ee):
-    pass
+def _mask0_(pivot, pp, ee, residue_set):
+    if not pivot in residue_set:
+        residue_set.append(pivot)
+    ctr = 0
+    for x in residue_set:
+        if x in pp and not x in ee:
+            del residue_set[ctr]
+        ctr = ctr + 1
+    return residue_set
 
-def _mask1_(pivot, mask):
-    pass
+def _mask1_(pivot, mask, residue_set):
+    if not pivot in residue_set:
+        residue_set.append(pivot)
+    ctr = 0
+    for x in residue_set:
+        if x in mask:
+            del residue_set[ctr]
+        ctr = ctr + 1
+    return residue_set
 
 def factorize(triplets, num):
     fp = open("./pi.txt","r")
@@ -65,10 +79,10 @@ def factorize(triplets, num):
                 print("Out of range error, please increase the range and try.")
                 sys.exit(2)
             if triplet[1] == "00.0":
-                residue_set = _mask0_(pivot, pp, ee)
+                residue_set = _mask0_(pivot, pp, ee, residue_set)
             else:
                 mask = triplet[1][ctr*3:ctr*3+5]
-                residue_set = _mask1_(pivot, mask)
+                residue_set = _mask1_(pivot, mask, residue_set)
             if len(residue_set) == 0 and state == 1:
                 break
             elif len(residue_set) == 0 and state == 0:
@@ -92,4 +106,3 @@ if __name__ == "__main__":
     triplets = characterize(num, precision)
     lower_factor, higher_factor = factorize(triplets, num)
     print(num + "\t=\t" + str(lower_factor) + "\tX\t" + str(higher_factor))
-
