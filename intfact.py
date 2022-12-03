@@ -91,7 +91,10 @@ def factorize(triplets, num):
                 mask = triplet[1][ctr*3:ctr*3+5]
                 residue_set = _mask_(pivot, mask, residue_set)
             nary_set = mutual_exclusion(pp, ee)
-            input([nary_set, residue_set])
+            if len(residue_set) == 0 or len(nary_set) == len(residue_set):
+                pass
+            else:
+                input([nary_set, residue_set])
             fast_counter = fast_counter + 1
         ctr = ctr + 1
     fp.close()
