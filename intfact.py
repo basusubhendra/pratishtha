@@ -3,8 +3,6 @@ import sys
 import mpmath
 import gmpy2
 from linetimer import CodeTimer
-import zeros
-import raw_zeros 
 
 def Usage():
     print("Usage:\n./intfact.py <number to be factorized in decimal> <precision in number of digits>\n")
@@ -77,6 +75,7 @@ def factorize(triplets, num):
     l = len(triplets)
     residue_set = []
     interval = 0
+    offset = -1
     while True:
         fast_counter = 0
         while  fast_counter < l:
@@ -94,13 +93,10 @@ def factorize(triplets, num):
             if triplet[1] != "00.0":
                 mask = triplet[1][ctr*3:ctr*3+5]
                 residue_set = _mask_(pivot, mask, residue_set)
-            nary_set = mutual_exclusion(pp, ee)
-            if len(residue_set) == 0 or len(nary_set) == len(residue_set):
-                pass
-            elif len(nary_set) > len(residue_set):
-                interval = interval + 1
-            elif len(nary_set) < len(residue_set):
-                input([interval, nary_set, residue_set, ">"])
+            if len(residue_set) == 0:
+                nary_set1 = mutual_exclusion(pp, ee)
+                nary_set2 = mutual_exclusion(ee, pp)
+                input([nary_set1, nary_set2])
             fast_counter = fast_counter + 1
         ctr = ctr + 1
     fp.close()
