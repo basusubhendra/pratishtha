@@ -3,6 +3,8 @@ import sys
 import mpmath
 import gmpy2
 from linetimer import CodeTimer
+import zeros
+import raw_zeros 
 
 def Usage():
     print("Usage:\n./intfact.py <number to be factorized in decimal> <precision in number of digits>\n")
