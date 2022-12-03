@@ -56,6 +56,7 @@ def _mask1_(pivot, mask, residue_set):
     return residue_set
 
 def factorize(triplets, num):
+    nz = gmpy2.mpz(num)
     fp = open("./pi.txt","r")
     fe = open("./e.txt","r")
     fp.seek(2)
@@ -68,10 +69,10 @@ def factorize(triplets, num):
     state = 0
     while True:
         fast_counter = 0
-        fp_pos = fp.tell()
         pp = str(fp.read(5))
-        fe_pos = fe.tell()
+        fp_pos = fp.tell()
         ee = str(fe.read(5))
+        fe_pos = fe.tell()
         fp.seek(fp_pos-2)
         fe.seek(fe_pos-2)
         while  fast_counter < l:
@@ -89,6 +90,9 @@ def factorize(triplets, num):
                 break
             elif len(residue_set) == 0 and state == 0:
                 lower_factor = lower_factor + str(interval)[::-1]
+                if gmpy2.mpz(lower_factor[::-1]) > nz:
+                    print("Something wrong with the core logic.")
+                    sys.exit(2)
                 interval = 0
                 state = 1
             elif len(residue_set) > 0:
