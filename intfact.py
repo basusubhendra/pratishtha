@@ -66,8 +66,9 @@ def factorize(triplets, num):
     l = len(triplets)
     residue_set = []
     interval = 0
-    lower_factor = ""
+    factor1 = ""
     state = 0
+    found = False
     while True:
         fast_counter = 0
         pp = str(fp.read(5))
@@ -82,7 +83,7 @@ def factorize(triplets, num):
             if ctr*3 + 5 > len(triplet[1]):
                 print("Out of range error, please increase the range and try.")
                 sys.exit(2)
-            input([pivot, triplet[1][ctr*3:ctr*3+5], ctr, residue_set, lower_factor])
+            #input([pivot, triplet[1][ctr*3:ctr*3+5], ctr, residue_set, factor1, state])
             if triplet[1] == "00.0":
                 residue_set = _mask0_(pivot, pp, ee, residue_set)
             else:
@@ -91,6 +92,7 @@ def factorize(triplets, num):
             if len(residue_set) > 0 and state == 1:
                 if interval > 0:
                     if interval == 2:
+                        found = True
                         break
                     interval = int(interval / 8)
                 state = 0
@@ -99,8 +101,8 @@ def factorize(triplets, num):
                 interval = interval + 1
             elif len(residue_set) == 0 and state == 0:
                 if interval > 0:
-                    lower_factor = lower_factor + str(interval)
-                    lower_factor = lower_factor[::-1]
+                    factor1 = factor1 + str(interval)
+                    factor1 = factor1[::-1]
                     interval = 1
                 else:
                     interval = interval + 1
@@ -108,12 +110,13 @@ def factorize(triplets, num):
             elif len(residue_set) == 0 and state == 1:
                 interval = interval + 1
             fast_counter = fast_counter + 1
+        if found:
+            break
         ctr = ctr + 1
-    lower_factor = lower_factor[::-1]
-    higher_factor = _divide_(num, lower_factor)
+    factor2 = _divide_(num, factor1)
     fp.close()
     fe.close()
-    return lower_factor, higher_factor
+    return factor1, factor2
 
 if __name__ == "__main__":
     num = str(sys.argv[1])
