@@ -14,9 +14,9 @@ def characterize(num, precision):
             triplet = triplet + num[(ctr + i) % l]
         score = triplet[0] + triplet[2] + "." + triplet[1]
         if score == 0.0:
-            triplets.append(str(mpmath.exp(1)))
+            triplets.append("00.0")
         else:
-            triplets.append(str(mpmath.log(score)))
+            triplets.append([score,str(mpmath.log(score))])
         ctr = ctr + 1
         if (ctr + 3) > l:
             break
