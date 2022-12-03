@@ -2,6 +2,7 @@
 import sys
 import mpmath
 import gmpy2
+from linetimer import CodeTimer
 
 def _divide_(num, factor):
     nz = gmpy2.mpz(num)
@@ -109,6 +110,11 @@ def factorize(triplets, num):
 if __name__ == "__main__":
     num = str(sys.argv[1])
     precision = int(sys.argv[2])
-    triplets = characterize(num, precision)
-    lower_factor, higher_factor = factorize(triplets, num)
-    print(num + "\t=\t" + str(lower_factor) + "\tX\t" + str(higher_factor))
+    with CodeTimer('Intfact'):
+        with CodeTimer('Characterize'):
+            triplets = characterize(num, precision)
+        print("Stage 1. Characterization Complete.")
+        print("Stage 2. Beginning of Factorization.")
+        with CodeTimer('Factorize'):
+            lower_factor, higher_factor = factorize(triplets, num)
+            print(num + "\t=\t" + str(lower_factor) + "\tX\t" + str(higher_factor))
