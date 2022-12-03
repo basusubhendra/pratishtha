@@ -5,17 +5,8 @@ import gmpy2
 from linetimer import CodeTimer
 
 def Usage():
-    print("Usage:\n./intfact.py <number to be factorized in decimal> <precision in number of digits>\n")
+    print("Usage:\n./intfact.py <number to be factorized in decimal> <precision in number of digits> <number of stages>\n")
     return 
-
-def _divide_(num, factor):
-    nz = gmpy2.mpz(num)
-    fz = gmpy2.mpz(factor)
-    if fz == gmpy2.mpz("0"):
-        print("Divide by zero exception")
-        sys.exit(2)
-    qz = gmpy2.f_div(nz, fz)
-    return str(qz)
 
 def characterize(num, precision):
     ctr = 0
@@ -66,7 +57,7 @@ def _mask_(pivot, mask, residue_set):
             break
     return residue_set
 
-def factorize(triplets, num):
+def find_mutual_exclusions(triplets, num, nstages):
     fp = open("./pi.txt","r")
     fe = open("./e.txt","r")
     fp.seek(2)
@@ -76,6 +67,8 @@ def factorize(triplets, num):
     residue_set = []
     interval = 0
     offset = -1
+    stages = []
+    counter = 0
     while True:
         fast_counter = 0
         while  fast_counter < l:
@@ -96,23 +89,35 @@ def factorize(triplets, num):
             if len(residue_set) == 0:
                 nary_set1 = mutual_exclusion(pp, ee)
                 nary_set2 = mutual_exclusion(ee, pp)
-                input([nary_set1, nary_set2])
+                stages.append([nary_set1, nary_set2])
+                counter = counter + 1
+                if counter == nstages:
+                    return stages
             fast_counter = fast_counter + 1
         ctr = ctr + 1
     fp.close()
     fe.close()
-    return 
+    return stages
+
+def factorize(stages):
+    factor1 = ""
+    factor2 = ""
+    return factor1, factor2
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
+    if len(sys.argv) < 4:
         Usage()
         sys.exit(2)
     num = str(sys.argv[1])
     precision = int(sys.argv[2])
+    nstages = int(sys.argv[3])
     with CodeTimer('Intfact'):
         with CodeTimer('Characterize'):
             triplets = characterize(num, precision)
         print("Stage 1. Characterization Complete.")
         print("Stage 2. Beginning of Factorization.")
+        with CodeTimer('Mutexes'):
+            stages = find_mutual_exclusions(triplets, num, nstages)
+            print(stages)
         with CodeTimer('Factorize'):
-            factorize(triplets, num)
+            factor1, factor2 = factorize(stages)
