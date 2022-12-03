@@ -39,21 +39,37 @@ def characterize(num, precision):
 def _mask0_(pivot, pp, ee, residue_set):
     if not pivot in residue_set:
         residue_set.append(pivot)
-    ctr = 0
-    for x in residue_set:
-        if x in pp and not x in ee:
-            del residue_set[ctr]
-        ctr = ctr + 1
+    residue_set = sorted(residue_set)
+    mask = sorted(mask)
+    while True:
+        ctr = 0
+        succ = False
+        for x in residue_set:
+            if x in pp and not x in ee:
+                del residue_set[ctr]
+                succ = True
+                break
+            ctr = ctr + 1
+        if succ == False:
+            break
     return residue_set
 
 def _mask1_(pivot, mask, residue_set):
     if not pivot in residue_set:
         residue_set.append(pivot)
-    ctr = 0
-    for x in residue_set:
-        if x in mask:
-            del residue_set[ctr]
-        ctr = ctr + 1
+    residue_set = sorted(residue_set)
+    mask = sorted(mask)
+    while True:
+        succ = False
+        ctr = 0
+        for x in residue_set:
+            if x in mask:
+                del residue_set[ctr]
+                succ = True
+                break
+            ctr = ctr + 1
+        if succ == False:
+            break
     return residue_set
 
 def factorize(triplets, num):
@@ -83,7 +99,6 @@ def factorize(triplets, num):
             if ctr*3 + 5 > len(triplet[1]):
                 print("Out of range error, please increase the range and try.")
                 sys.exit(2)
-            #input([pivot, triplet[1][ctr*3:ctr*3+5], ctr, residue_set, factor1, state])
             if triplet[1] == "00.0":
                 residue_set = _mask0_(pivot, pp, ee, residue_set)
             else:
@@ -109,6 +124,7 @@ def factorize(triplets, num):
                 state = 1
             elif len(residue_set) == 0 and state == 1:
                 interval = interval + 1
+            #input([pivot, triplet[1][ctr*3:ctr*3+5], ctr, residue_set, factor1, state])
             fast_counter = fast_counter + 1
         if found:
             break
