@@ -105,26 +105,14 @@ def factorize(triplets, num):
                 mask = triplet[1][ctr*3:ctr*3+5]
                 residue_set = _mask1_(pivot, mask, residue_set)
             if len(residue_set) > 0 and state == 1:
-                if interval > 0:
-                    if interval == 2:
-                        found = True
-                        break
-                    interval = int(interval / 8)
+                if interval % 8 == 0:
+                    factor1 = factor1 + str(interval / 8)
+                interval = 0
                 state = 0
+            elif len(residue_set) == 0:
                 interval = interval + 1
-            elif len(residue_set) > 0 and state == 0:
-                interval = interval + 1
-            elif len(residue_set) == 0 and state == 0:
-                if interval > 0:
-                    factor1 = factor1 + str(interval)
-                    factor1 = factor1[::-1]
-                    interval = 1
-                else:
-                    interval = interval + 1
                 state = 1
-            elif len(residue_set) == 0 and state == 1:
-                interval = interval + 1
-            #input([pivot, triplet[1][ctr*3:ctr*3+5], ctr, residue_set, factor1, state])
+            input([pivot, triplet[1][ctr*3:ctr*3+5], ctr, residue_set, factor1, state, interval])
             fast_counter = fast_counter + 1
         if found:
             break
