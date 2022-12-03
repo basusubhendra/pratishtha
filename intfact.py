@@ -44,8 +44,9 @@ def mutual_exclusion(pp, ee):
     excl_set = []
     for x in pp:
         if not x in ee:
-            excl_set.append(x)
-    return excl_set
+            if not x in excl_set:
+                excl_set.append(x)
+    return sorted(excl_set)
 
 def _mask_(pivot, mask, residue_set):
     if not pivot in residue_set:
@@ -73,6 +74,7 @@ def factorize(triplets, num):
     ctr = 0
     l = len(triplets)
     residue_set = []
+    interval = 0
     while True:
         fast_counter = 0
         while  fast_counter < l:
@@ -93,8 +95,10 @@ def factorize(triplets, num):
             nary_set = mutual_exclusion(pp, ee)
             if len(residue_set) == 0 or len(nary_set) == len(residue_set):
                 pass
-            else:
-                input([nary_set, residue_set])
+            elif len(nary_set) > len(residue_set):
+                interval = interval + 1
+            elif len(nary_set) < len(residue_set):
+                input([interval, nary_set, residue_set, ">"])
             fast_counter = fast_counter + 1
         ctr = ctr + 1
     fp.close()
