@@ -4,6 +4,10 @@ import mpmath
 import gmpy2
 from linetimer import CodeTimer
 
+def Usage():
+    print("Usage:\n./intfact.py <number to be factorized in decimal> <precision in number of digits>\n")
+    return 
+
 def _divide_(num, factor):
     nz = gmpy2.mpz(num)
     fz = gmpy2.mpz(factor)
@@ -36,25 +40,14 @@ def characterize(num, precision):
             break
     return triplets
 
-def _mask0_(pivot, pp, ee, residue_set):
-    if not pivot in residue_set:
-        residue_set.append(pivot)
-    residue_set = sorted(residue_set)
-    mask = sorted(mask)
-    while True:
-        ctr = 0
-        succ = False
-        for x in residue_set:
-            if x in pp and not x in ee:
-                del residue_set[ctr]
-                succ = True
-                break
-            ctr = ctr + 1
-        if succ == False:
-            break
-    return residue_set
+def mutual_exclusion(pp, ee):
+    excl_set = []
+    for x in pp:
+        if not x in ee:
+            excl_set.append(x)
+    return excl_set
 
-def _mask1_(pivot, mask, residue_set):
+def _mask_(pivot, mask, residue_set):
     if not pivot in residue_set:
         residue_set.append(pivot)
     residue_set = sorted(residue_set)
@@ -73,7 +66,6 @@ def _mask1_(pivot, mask, residue_set):
     return residue_set
 
 def factorize(triplets, num):
-    nz = gmpy2.mpz(num)
     fp = open("./pi.txt","r")
     fe = open("./e.txt","r")
     fp.seek(2)
@@ -81,48 +73,35 @@ def factorize(triplets, num):
     ctr = 0
     l = len(triplets)
     residue_set = []
-    interval = 0
-    factor1 = ""
-    state = 0
-    found = False
     while True:
         fast_counter = 0
-        pp = str(fp.read(5))
-        fp_pos = fp.tell()
-        ee = str(fe.read(5))
-        fe_pos = fe.tell()
-        fp.seek(fp_pos-2)
-        fe.seek(fe_pos-2)
         while  fast_counter < l:
+            pp = str(fp.read(5))
+            fp_pos = fp.tell()
+            ee = str(fe.read(5))
+            fe_pos = fe.tell()
+            fp.seek(fp_pos-2)
+            fe.seek(fe_pos-2)
             triplet = triplets[fast_counter]
             pivot = triplet[0]
             if ctr*3 + 5 > len(triplet[1]):
                 print("Out of range error, please increase the range and try.")
                 sys.exit(2)
-            if triplet[1] == "00.0":
-                residue_set = _mask0_(pivot, pp, ee, residue_set)
-            else:
+            if triplet[1] != "00.0":
                 mask = triplet[1][ctr*3:ctr*3+5]
-                residue_set = _mask1_(pivot, mask, residue_set)
-            if len(residue_set) > 0 and state == 1:
-                if interval > 0 and interval % 8 == 0:
-                    factor1 = factor1 + str(int(interval / 8))
-                    interval = 0
-                state = 0
-            elif len(residue_set) == 0:
-                interval = interval + 1
-                state = 1
-            input([residue_set, factor1, state, interval])
+                residue_set = _mask_(pivot, mask, residue_set)
+            nary_set = mutual_exclusion(pp, ee)
+            input([nary_set, residue_set])
             fast_counter = fast_counter + 1
-        if found:
-            break
         ctr = ctr + 1
-    factor2 = _divide_(num, factor1)
     fp.close()
     fe.close()
-    return factor1, factor2
+    return 
 
 if __name__ == "__main__":
+    if len(sys.argv) < 3:
+        Usage()
+        sys.exit(2)
     num = str(sys.argv[1])
     precision = int(sys.argv[2])
     with CodeTimer('Intfact'):
@@ -131,5 +110,4 @@ if __name__ == "__main__":
         print("Stage 1. Characterization Complete.")
         print("Stage 2. Beginning of Factorization.")
         with CodeTimer('Factorize'):
-            lower_factor, higher_factor = factorize(triplets, num)
-            print(num + "\t=\t" + str(lower_factor) + "\tX\t" + str(higher_factor))
+            factorize(triplets, num)
