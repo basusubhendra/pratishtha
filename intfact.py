@@ -25,12 +25,12 @@ def characterize(num, precision):
             triplet = triplet + num[(ctr + i) % l]
         score = triplet[0] + triplet[2] + "." + triplet[1]
         if score == "00.0":
-            triplets.append([triplet[2],"00.0"])
+            triplets.append([triplet[1],"00.0"])
         else:
             log_score = str(mpmath.log(score))
             index = log_score.index(".")
             log_score = log_score[index + 1:]
-            triplets.append([triplet[2],log_score])
+            triplets.append([triplet[1],log_score])
         ctr = ctr + 1
         if (ctr + 3) > l:
             break
@@ -82,22 +82,33 @@ def factorize(triplets, num):
             if ctr*3 + 5 > len(triplet[1]):
                 print("Out of range error, please increase the range and try.")
                 sys.exit(2)
+            input([pivot, triplet[1][ctr*3:ctr*3+5], ctr, residue_set, lower_factor])
             if triplet[1] == "00.0":
                 residue_set = _mask0_(pivot, pp, ee, residue_set)
             else:
                 mask = triplet[1][ctr*3:ctr*3+5]
                 residue_set = _mask1_(pivot, mask, residue_set)
-            if len(residue_set) == 0 and state == 1:
-                break
-            elif len(residue_set) == 0 and state == 0:
-                lower_factor = lower_factor + str(interval)[::-1]
-                if gmpy2.mpz(lower_factor[::-1]) > nz:
-                    print("Something wrong with the core logic.")
-                    sys.exit(2)
-                interval = 0
-                state = 1
-            elif len(residue_set) > 0:
+            if len(residue_set) > 0 and state == 1:
+                if interval > 0:
+                    if interval == 2:
+                        break
+                    elif interval % 8 == 0:
+                        interval = int(interval / 8)
+                    else:
+                        interval = 0
                 state = 0
+                interval = interval + 1
+            elif len(residue_set) > 0 and state == 0:
+                interval = interval + 1
+            elif len(residue_set) == 0 and state == 0:
+                if interval > 0:
+                    lower_factor = lower_factor + str(interval)
+                    lower_factor = lower_factor[::-1]
+                    interval = 1
+                else:
+                    interval = interval + 1
+                state = 1
+            elif len(residue_set) == 0 and state == 1:
                 interval = interval + 1
             fast_counter = fast_counter + 1
         ctr = ctr + 1
