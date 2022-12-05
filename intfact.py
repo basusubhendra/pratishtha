@@ -57,6 +57,14 @@ def _mask_(pivot, mask, residue_set):
             break
     return residue_set
 
+def _exclusive_(s1):
+    ss1 = sorted(list(set(map(int,s1))))
+    if (len(ss1) == 1 and (ss1[0] == 0 or ss1[0] == 8)) or (len(ss1) == 2 and ss1 == [0, 8]):
+        return True
+    else:
+        return False
+    return False
+
 def find_mutual_exclusions(triplets, num, nstages):
     fp = open("./pi.txt","r")
     fe = open("./e.txt","r")
@@ -69,6 +77,7 @@ def find_mutual_exclusions(triplets, num, nstages):
     offset = -1
     stages = []
     counter = 0
+    nary_sets = []
     while True:
         fast_counter = 0
         while  fast_counter < l:
@@ -89,10 +98,13 @@ def find_mutual_exclusions(triplets, num, nstages):
             if len(residue_set) == 0:
                 nary_set1 = mutual_exclusion(pp, ee)
                 nary_set2 = mutual_exclusion(ee, pp)
-                stages.append([nary_set1, nary_set2])
-                counter = counter + 1
-                if counter == nstages:
-                    return stages
+                nary_sets.append([nary_set1, nary_set2])
+                if _exclusive_(nary_set1) or _exclusive_(nary_set2):
+                    stages.append(nary_sets)
+                    nary_sets = []
+                    counter = counter + 1
+                    if counter == nstages:
+                        return stages
             fast_counter = fast_counter + 1
         ctr = ctr + 1
     fp.close()
@@ -119,6 +131,8 @@ if __name__ == "__main__":
         with CodeTimer('Mutexes'):
             stages = find_mutual_exclusions(triplets, num, nstages)
             for s in stages:
-                input(s)
+                for x in s:
+                    print(x)
+                input("\n")
         with CodeTimer('Factorize'):
             factor1, factor2 = factorize(stages)
