@@ -58,6 +58,8 @@ def _mask_(pivot, mask, residue_set):
     return residue_set
 
 def _exclusive_(s1):
+    if len(s1) == 0:
+        return True
     ss1 = sorted(list(set(map(int,s1))))
     if (len(ss1) == 1 and (ss1[0] == 0 or ss1[0] == 8)) or (len(ss1) == 2 and ss1 == [0, 8]):
         return True
