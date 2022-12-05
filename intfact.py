@@ -118,6 +118,57 @@ def find_mutual_exclusions(triplets, num, nstages):
 def factorize(stages):
     factor1 = ""
     factor2 = ""
+    parity_left = 1
+    parity_right = 1
+    factor_snippets = []
+    left_pp = ""
+    right_pp = ""
+    state = 0
+    for stage in stages:
+        left_index_pp = 0
+        right_index_pp = 0
+        interval = 0
+        if parity_left == 1:
+            left_pp = pi
+        else:
+            left_pp = e
+        if parity_right == 1:
+            right_pp = pi
+        else:
+            right_pp = e
+        for s in stage:
+            lhs = s[0]
+            rhs = s[1]
+            len_lhs = len(lhs)
+            len_rhs = len(rhs)
+            _left_index_pp_ = left_index_pp
+            for x in lhs:
+                if x in left_pp[:len_lhs]:
+                    _left_index_pp_ = _left_index_pp_ + 1
+            _right_index_pp_ = right_index_pp
+            for x in rhs:
+                if x in right_pp[:len_rhs]:
+                    _right_index_pp_ = _right_index_pp_ + 1
+            if _left_index_pp_ > left_index_pp and _right_index_pp_ > right_index_pp:
+                if left_parity == right_parity and state == 0:
+                    interval = interval + 1
+                elif left_parity == right_parity and state == 1:
+                    factor_snippets.append(bin(interval)[2:])
+                    interval = 0
+                    state = 0
+                elif left_parity != right_parity and state == 1:
+                    interval = interval + 1
+                elif left_parity != right_parity and state == 0:
+                    factor_snippets.append(bin(interval)[2:])
+                    interval = 0
+                    state = 1
+            if len(lhs) == 0 or _exclusive_(lhs):
+                left_parity = 1 - left_parity
+            if len(rhs) == 0 or _exclusive_(rhs):
+                right_parity = 1 - right_parity
+            if (len(lhs) == 0 or _exclusive_(lhs)) and (len(rhs) == 0 or _exclusive_(rhs)):
+                break
+    input(factor_snippets)
     return factor1, factor2
 
 if __name__ == "__main__":
