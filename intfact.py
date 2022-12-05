@@ -158,6 +158,13 @@ def factorize(stages, param):
                        break
             if left_index_pp > _left_index_pp_ and right_index_pp > _right_index_pp_:
                 parities.append([parity_left, parity_right])
+                lhs = stage[-1][0]
+                rhs = stage[-1][1]
+                if len(lhs) == 0 or _exclusive_(lhs):
+                    parity_left = 1 - parity_left
+                if len(rhs) == 0 or _exclusive_(rhs):
+                    parity_right = 1 - parity_right
+                break
             if len(lhs) == 0 or _exclusive_(lhs):
                 parity_left = 1 - parity_left
             if len(rhs) == 0 or _exclusive_(rhs):
