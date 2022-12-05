@@ -123,7 +123,7 @@ def factorize(stages):
     factor_snippets = []
     left_pp = ""
     right_pp = ""
-    state = 0
+    state = 2
     for stage in stages:
         left_index_pp = 0
         right_index_pp = 0
@@ -150,22 +150,22 @@ def factorize(stages):
                 if x in right_pp[:len_rhs]:
                     _right_index_pp_ = _right_index_pp_ + 1
             if _left_index_pp_ > left_index_pp and _right_index_pp_ > right_index_pp:
-                if left_parity == right_parity and state == 0:
+                if parity_left == parity_right and (state == 2 or state == 0):
                     interval = interval + 1
-                elif left_parity == right_parity and state == 1:
+                elif parity_left == parity_right and state == 1:
                     factor_snippets.append(bin(interval)[2:])
                     interval = 0
                     state = 0
-                elif left_parity != right_parity and state == 1:
+                elif parity_left != parity_right and (state == 2 or state == 1):
                     interval = interval + 1
-                elif left_parity != right_parity and state == 0:
+                elif parity_left != parity_right and state == 0:
                     factor_snippets.append(bin(interval)[2:])
                     interval = 0
                     state = 1
             if len(lhs) == 0 or _exclusive_(lhs):
-                left_parity = 1 - left_parity
+                parity_left = 1 - parity_left
             if len(rhs) == 0 or _exclusive_(rhs):
-                right_parity = 1 - right_parity
+                parity_right = 1 - parity_right
             if (len(lhs) == 0 or _exclusive_(lhs)) and (len(rhs) == 0 or _exclusive_(rhs)):
                 break
     input(factor_snippets)
@@ -185,9 +185,5 @@ if __name__ == "__main__":
         print("Stage 2. Beginning of Factorization.")
         with CodeTimer('Mutexes'):
             stages = find_mutual_exclusions(triplets, num, nstages)
-            for s in stages:
-                for x in s:
-                    print(x)
-                input("\n")
         with CodeTimer('Factorize'):
             factor1, factor2 = factorize(stages)
