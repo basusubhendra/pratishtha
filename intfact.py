@@ -117,9 +117,7 @@ def find_mutual_exclusions(triplets, num, nstages):
     fe.close()
     return stages
 
-def factorize_helper(stage, param, q):
-    parity_left = int(param)
-    parity_right = int(param)
+def factorize_helper(stage, param, parity_left, parity_right, q0, q):
     left_index_pp = 0
     right_index_pp = 0
     if parity_left == 1:
@@ -166,6 +164,7 @@ def factorize_helper(stage, param, q):
             parity_left = 1 - parity_left
         if len(rhs) == 0 or _exclusive_(rhs):
             parity_right = 1 - parity_right
+    q0.put([parity_left, parity_right])
     q.put(parities)
     return
 
@@ -173,11 +172,16 @@ def factorize(stages):
     factor1 = ""
     factor2 = ""
     q = Queue()
+    q0 = Queue()
     prev_stage1 = ""
     prev_stage0 = ""
+    parity_left1 = 1
+    parity_right1 = 1
+    parity_left2 = 0
+    parity_right2 = 0
     for stage in stages:
-        t1 = Thread(target = factorize_helper, args = (stage, 1, q, ))
-        t2 = Thread(target = factorize_helper, args = (stage, 0, q, ))
+        t1 = Thread(target = factorize_helper, args = (stage, 1, parity_left1, parity_right1, q0, q, ))
+        t2 = Thread(target = factorize_helper, args = (stage, 0, parity_left2, parity_right2, q0, q, ))
         t1.start()
         t2.start()
         t1.join()
@@ -185,6 +189,16 @@ def factorize(stages):
         t = 0
         ctr = 0
         tuple1 = []
+        while not q0.empty():
+            Q = q0.get()
+            if t == 0:
+                parity_left1 = Q[0]
+                parity_right1 = Q[1]
+            elif t == 1:
+                parity_left2 = Q[0]
+                parity_right2 = Q[1]
+            t = 1 - t
+        t = 0
         while not q.empty():
             Q = q.get()
             tuple1.append(Q)
