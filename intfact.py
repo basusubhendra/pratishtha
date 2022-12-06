@@ -240,10 +240,10 @@ def factorize(stages):
                         print(prev_stage0)
             ctr = (ctr + 1) % 2
             if ctr == 0:
-                input(tuple1)
+                #input(tuple1)
                 tuple1 = []
             t = 1 - t
-        print("End of stage")
+        input("End of stage")
     return factor1, factor2
 
 if __name__ == "__main__":
