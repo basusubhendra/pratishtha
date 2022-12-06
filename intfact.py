@@ -183,8 +183,11 @@ def factorize(stages):
         t1.join()
         t2.join()
         t = 0
+        ctr = 0
+        tuple1 = []
         while not q.empty():
             Q = q.get()
+            tuple1.append(Q)
             if len(Q) > 0:
                 Q1 = Q[0]
                 Q0 = Q[1]
@@ -201,18 +204,30 @@ def factorize(stages):
                     elif t == 1:
                         prev_stage0 = "A"
             elif len(Q) == 0:
-                if prev_stage1 == "" or prev_stage1 == "A":
-                    prev_stage1 = "S"
-                    print(prev_stage1)
-                elif prev_stage1 == "S":
-                    prev_stage1 = "A"
-                    print(prev_stage1)
-                if prev_stage0 == "" or prev_stage0 == "S":
-                    prev_stage0 = "A"
-                    print(prev_stage0)
-                elif prev_stage0 == "A":
-                    prev_stage0 = "S"
-                    print(prev_stage0)
+                if t == 1:
+                    if prev_stage1 == "":
+                        prev_stage1 = "S"
+                        print(prev_stage1)
+                    elif prev_stage1 == "A":
+                        prev_stage1 = "S"
+                        print(prev_stage1)
+                    elif prev_stage1 == "S":
+                        prev_stage1 = "A"
+                        print(prev_stage1)
+                elif t == 0:
+                    if prev_stage0 == "":
+                        prev_stage0 = "S"
+                        print(prev_stage0)
+                    elif prev_stage0 == "S":
+                        prev_stage0 = "A"
+                        print(prev_stage0)
+                    elif prev_stage0 == "A":
+                        prev_stage0 = "S"
+                        print(prev_stage0)
+            ctr = (ctr + 1) % 2
+            if ctr == 0:
+                input(tuple1)
+                tuple1 = []
             t = 1 - t
         print("End of stage")
     return factor1, factor2
