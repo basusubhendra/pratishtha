@@ -153,7 +153,8 @@ def factorize_helper(stage, param, q):
                 else:
                    break
         if left_index_pp > _left_index_pp_ and right_index_pp > _right_index_pp_:
-            parities.append([parity_left, parity_right])
+            parities.append(parity_left)
+            parities.append(parity_right)
             lhs = stage[-1][0]
             rhs = stage[-1][1]
             if len(lhs) == 0 or _exclusive_(lhs):
@@ -171,6 +172,7 @@ def factorize_helper(stage, param, q):
 def factorize(stages):
     factor1 = ""
     factor2 = ""
+    q = Queue()
     for stage in stages:
         t1 = Thread(target = factorize_helper, args = (stage, 1, q, ))
         t2 = Thread(target = factorize_helper, args = (stage, 0, q, ))
