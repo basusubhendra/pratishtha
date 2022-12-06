@@ -173,6 +173,8 @@ def factorize(stages):
     factor1 = ""
     factor2 = ""
     q = Queue()
+    prev_stage1 = ""
+    prev_stage0 = ""
     for stage in stages:
         t1 = Thread(target = factorize_helper, args = (stage, 1, q, ))
         t2 = Thread(target = factorize_helper, args = (stage, 0, q, ))
@@ -180,8 +182,38 @@ def factorize(stages):
         t2.start()
         t1.join()
         t2.join()
+        t = 0
         while not q.empty():
-            input(q.get())
+            Q = q.get()
+            if len(Q) > 0:
+                Q1 = Q[0]
+                Q0 = Q[1]
+                if Q1 == Q0:
+                    print("S")
+                    if t == 0:
+                       prev_stage1 = "S"
+                    elif t == 1:
+                       prev_stage0 = "S"
+                elif Q1 != Q0:
+                    print("A")
+                    if t == 0:
+                        prev_stage1 = "A"
+                    elif t == 1:
+                        prev_stage0 = "A"
+            elif len(Q) == 0:
+                if prev_stage1 == "" or prev_stage1 == "A":
+                    prev_stage1 = "S"
+                    print(prev_stage1)
+                elif prev_stage1 == "S":
+                    prev_stage1 = "A"
+                    print(prev_stage1)
+                if prev_stage0 == "" or prev_stage0 == "S":
+                    prev_stage0 = "A"
+                    print(prev_stage0)
+                elif prev_stage0 == "A":
+                    prev_stage0 = "S"
+                    print(prev_stage0)
+            t = 1 - t
         print("End of stage")
     return factor1, factor2
 
