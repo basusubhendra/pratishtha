@@ -3,6 +3,8 @@ import sys
 import mpmath
 import gmpy2
 from linetimer import CodeTimer
+from threading import Thread
+from queue import Queue
 from pi import pi
 from e import e
 
@@ -115,63 +117,70 @@ def find_mutual_exclusions(triplets, num, nstages):
     fe.close()
     return stages
 
-def factorize(stages, param):
-    factor1 = ""
-    factor2 = ""
+def factorize_helper(stage, param, q):
     parity_left = int(param)
     parity_right = int(param)
-    factor_snippets = []
-    left_pp = ""
-    right_pp = ""
-    for stage in stages:
-        left_index_pp = 0
-        right_index_pp = 0
-        if parity_left == 1:
-            left_pp = pi
-        else:
-            left_pp = e
-        if parity_right == 1:
-            right_pp = pi
-        else:
-            right_pp = e
-        parities = []
-        for s in stage:
-            lhs = s[0]
-            rhs = s[1]
-            len_lhs = len(lhs)
-            len_rhs = len(rhs)
-            _left_index_pp_ = left_index_pp
-            if len_lhs > 0:
-                for x in left_pp[_left_index_pp_:_left_index_pp_ + len_lhs]:
-                    if x in sorted(lhs):
-                        #input(["lhs",x, lhs, left_pp[_left_index_pp_:_left_index_pp_+len_lhs]])
-                        left_index_pp = left_index_pp + 1
-                    else:
-                       break
-            _right_index_pp_ = right_index_pp
-            if len_rhs > 0:
-                for x in right_pp[_right_index_pp_:_right_index_pp_ + len_rhs]:
-                    if x in sorted(rhs):
-                        #input(["rhs",x, rhs, right_pp[_right_index_pp_:_right_index_pp_+len_rhs]])
-                        right_index_pp = right_index_pp + 1
-                    else:
-                       break
-            if left_index_pp > _left_index_pp_ and right_index_pp > _right_index_pp_:
-                parities.append([parity_left, parity_right])
-                lhs = stage[-1][0]
-                rhs = stage[-1][1]
-                if len(lhs) == 0 or _exclusive_(lhs):
-                    parity_left = 1 - parity_left
-                if len(rhs) == 0 or _exclusive_(rhs):
-                    parity_right = 1 - parity_right
-                break
+    left_index_pp = 0
+    right_index_pp = 0
+    if parity_left == 1:
+        left_pp = pi
+    else:
+        left_pp = e
+    if parity_right == 1:
+        right_pp = pi
+    else:
+        right_pp = e
+    parities = []
+    for s in stage:
+        lhs = s[0]
+        rhs = s[1]
+        len_lhs = len(lhs)
+        len_rhs = len(rhs)
+        _left_index_pp_ = left_index_pp
+        if len_lhs > 0:
+            for x in left_pp[_left_index_pp_:_left_index_pp_ + len_lhs]:
+                if x in sorted(lhs):
+                    #input(["lhs",x, lhs, left_pp[_left_index_pp_:_left_index_pp_+len_lhs]])
+                    left_index_pp = left_index_pp + 1
+                else:
+                   break
+        _right_index_pp_ = right_index_pp
+        if len_rhs > 0:
+            for x in right_pp[_right_index_pp_:_right_index_pp_ + len_rhs]:
+                if x in sorted(rhs):
+                    #input(["rhs",x, rhs, right_pp[_right_index_pp_:_right_index_pp_+len_rhs]])
+                    right_index_pp = right_index_pp + 1
+                else:
+                   break
+        if left_index_pp > _left_index_pp_ and right_index_pp > _right_index_pp_:
+            parities.append([parity_left, parity_right])
+            lhs = stage[-1][0]
+            rhs = stage[-1][1]
             if len(lhs) == 0 or _exclusive_(lhs):
                 parity_left = 1 - parity_left
             if len(rhs) == 0 or _exclusive_(rhs):
                 parity_right = 1 - parity_right
+            break
+        if len(lhs) == 0 or _exclusive_(lhs):
+            parity_left = 1 - parity_left
+        if len(rhs) == 0 or _exclusive_(rhs):
+            parity_right = 1 - parity_right
+    q.put(parities)
+    return
+
+def factorize(stages):
+    factor1 = ""
+    factor2 = ""
+    for stage in stages:
+        t1 = Thread(target = factorize_helper, args = (stage, 1, q, ))
+        t2 = Thread(target = factorize_helper, args = (stage, 0, q, ))
+        t1.start()
+        t2.start()
+        t1.join()
+        t2.join()
+        while not q.empty():
+            input(q.get())
         print("End of stage")
-        input(parities)
-        factor_snippets.append(parities)
     return factor1, factor2
 
 if __name__ == "__main__":
@@ -189,6 +198,6 @@ if __name__ == "__main__":
             stages = find_mutual_exclusions(triplets, num, nstages)
         print("Stage 2. End of Mutual Exclusion.")
         with CodeTimer('Factorize'):
-            factor1, factor2 = factorize(stages, 1)
+            factor1, factor2 = factorize(stages)
         print("Stage 3. End of Factorization.")
     print("End of Program.")
