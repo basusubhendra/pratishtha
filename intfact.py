@@ -222,7 +222,7 @@ def factorize(stages):
                        if stage1 == "":
                            first_element_stage1 = "S"
                        stage1 = "S"
-                       print(stage1)
+                       #print(stage1)
                     elif t == 1:
                        if stage0 == "S":
                            if first_element_stage0 == "S":
@@ -250,7 +250,7 @@ def factorize(stages):
                            nones = 0
                            factor_snippet_stage0 = ""
                        stage0 = "S"
-                       print(stage0)
+                       #print(stage0)
                 elif Q1 != Q0:
                     if t == 0:
                         if stage1 == "A":
@@ -259,7 +259,7 @@ def factorize(stages):
                             elif first_element_stage1 == "A":
                                 nzeros = nzeros + 1
                         stage1 = "A"
-                        print(stage1)
+                        #print(stage1)
                     elif t == 1:
                         if stage0 == "A":
                             if first_element_stage0 == "S":
@@ -273,47 +273,48 @@ def factorize(stages):
                             if h == 0:
                                 factor1.append(factor_snippet_stage0)
                                 h = 1 - h
+                                input(nones, nzeros)
                             elif h == 1:
                                 factor2.append(factor_snippet_stage0)
                                 h = 1 - h
+                                input(nones, nzeros)
                             factor_snippet_stage0 = ""
                         stage0 = "A"
-                        print(stage0)
+                        #print(stage0)
             elif len(Q) == 0:
                 if t == 0:
                     if stage1 == "":
                         stage1 = "S"
                         if first_element_stage1 == "":
                             first_element_stage1 = "S"
-                        print("1" + str(stage1))
+                        #print("1" + str(stage1))
                     elif stage1 == "A":
                         stage1 = "S"
                         if first_element_stage1 == "":
                             first_element_stage1 = "S"
-                        print("1" + str(stage1))
+                        #print("1" + str(stage1))
                     elif stage1 == "S":
                         stage1 = "A"
                         if first_element_stage1 == "":
                             first_element_stage1 = "A"
-                        print("1" + str(stage1))
+                        #print("1" + str(stage1))
                 elif t == 1:
                     if stage0 == "":
                         stage0 = "S"
                         if first_element_stage0 == "":
                             first_element_stage0 = "S"
-                        print("0" + str(stage0))
+                        #print("0" + str(stage0))
                     elif stage0 == "A":
                         stage0 = "S"
                         if first_element_stage0 == "":
                             first_element_stage0 = "S"
-                        print("0" + str(stage0))
+                        #print("0" + str(stage0))
                     elif stage0 == "S":
                         stage0 = "A"
                         if first_element_stage0 == "":
                             first_element_stage0 = "A"
-                        print("0" + str(stage0))
+                        #print("0" + str(stage0))
             t = 1 - t
-        print(nones, nzeros)
         print(factor_snippet_stage0)
         print(factor1)
         print(factor2)
