@@ -318,7 +318,7 @@ def factorize(stages):
         print(factor_snippet_stage0)
         print(factor1)
         print(factor2)
-        print("End of stage")
+        input("End of stage")
     return factor1, factor2
 
 if __name__ == "__main__":
