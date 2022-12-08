@@ -315,7 +315,6 @@ def factorize(stages):
                             first_element_stage0 = "A"
                         print("0" + str(stage0))
             t = 1 - t
-        print(factor_snippet_stage0)
         print(factor1)
         print(factor2)
         input("End of stage")
