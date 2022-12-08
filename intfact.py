@@ -268,16 +268,16 @@ def factorize(stages):
                                 factor_snippet_stage0 = factor_snippet_stage0 + "0"
                             first_element_stage0 = ""
                         if nzeros > 0 and nzeros == nones:
-                            nones = 0
-                            nzeros = 0
                             if h == 0:
                                 factor1.append(factor_snippet_stage0)
                                 h = 1 - h
-                                input(nones, nzeros)
+                                input([nones, nzeros])
                             elif h == 1:
                                 factor2.append(factor_snippet_stage0)
                                 h = 1 - h
-                                input(nones, nzeros)
+                                input([nones, nzeros])
+                            nones = 0
+                            nzeros = 0
                             factor_snippet_stage0 = ""
                         stage0 = "A"
                         #print(stage0)
@@ -318,7 +318,7 @@ def factorize(stages):
         print(factor_snippet_stage0)
         print(factor1)
         print(factor2)
-        input("End of stage")
+        print("End of stage")
     return factor1, factor2
 
 if __name__ == "__main__":
