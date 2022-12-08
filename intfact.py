@@ -248,6 +248,10 @@ def factorize(stages):
                            if nones_stage0 == nzeros_stage0:
                                factor2 = factor2 + str(current_bit_stage0)
                                current_bit_stage0 = ""
+                           nones_stage1 = 0
+                           nzeros_stage1 = 0
+                           nones_stage0 = 0
+                           nzeros_stage0 = 0
                        stage0 = "S"
                        print(stage0)
                 elif Q1 != Q0:
