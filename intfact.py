@@ -173,12 +173,18 @@ def factorize(stages):
     factor2 = ""
     q = Queue()
     q0 = Queue()
-    prev_stage1 = ""
-    prev_stage0 = ""
+    stage1 = ""
+    stage0 = ""
     parity_left1 = 1
     parity_right1 = 1
     parity_left2 = 0
     parity_right2 = 0
+    first_element_stage0 = ""
+    first_element_stage1 = ""
+    factor_snippet_stage0 = ""
+    factor_snippet_stage1 = ""
+    nzeros = 0
+    nones = 0
     for stage in stages:
         t1 = Thread(target = factorize_helper, args = (stage, 1, parity_left1, parity_right1, q0, q, ))
         t2 = Thread(target = factorize_helper, args = (stage, 0, parity_left2, parity_right2, q0, q, ))
@@ -187,8 +193,6 @@ def factorize(stages):
         t1.join()
         t2.join()
         t = 0
-        ctr = 0
-        tuple1 = []
         while not q0.empty():
             Q = q0.get()
             if t == 0:
@@ -199,50 +203,78 @@ def factorize(stages):
                 parity_right2 = Q[1]
             t = 1 - t
         t = 0
+        factor_snippet_stage1 = ""
+        factor_snippet_stage0 = ""
         while not q.empty():
             Q = q.get()
-            tuple1.append(Q)
             if len(Q) > 0:
                 Q1 = Q[0]
                 Q0 = Q[1]
                 if Q1 == Q0:
                     print("S")
                     if t == 0:
-                       prev_stage1 = "S"
+                       if stage1 == "S":
+                           if first_element_stage1 == "S":
+                               factor_snippet_stage1 = factor_snippet_stage1 + "0"
+                           elif first_element_stage1 == "A":
+                               factor_snippet_stage1 = factor_snippet_stage1 + "1"
+                           first_element_stage1 = "S"
+                       if stage1 == "":
+                           first_element_stage1 = "S"
+                       stage1 = "S"
                     elif t == 1:
-                       prev_stage0 = "S"
+                       if stage0 == "S":
+                           if first_element_stage0 == "S":
+                               factor_snippet_stage0 = factor_snippet_stage0 + "0"
+                               nzeros = nzeros + 1
+                           elif first_element_stage0 == "A":
+                               factor_snippet_stage0 = factor_snippet_stage0 + "1"
+                               nones = nones + 1
+                           first_element_stage0 = "S"
+                           if nzeros == nones:
+                               nzeros = 0
+                               nones = 0
+                               factor_snippet_stage1 = ""
+                       if stage0 == "":
+                           first_element_stage0 = "S"
+                       stage0 = "S"
                 elif Q1 != Q0:
                     print("A")
                     if t == 0:
-                        prev_stage1 = "A"
+                        if stage1 == "A":
+                            if first_element_stage1 == "S":
+                                factor_snippet_stage1 = factor_snippet_stage1 + "1"
+                            elif first_element_stage1 == "A":
+                                factor_snippet_stage1 = factor_snippet_stage1 + "0"
+                            first_element_stage1 = "A"
+                        stage1 = "A"
                     elif t == 1:
-                        prev_stage0 = "A"
+                        if stage0 == "A":
+                            if first_element_stage0 == "S":
+                                factor_snippet_stage0 = factor_snippet_stage0 + "1"
+                                nones = nones + 1
+                            elif first_element_stage0 == "A":
+                                factor_snippet_stage0 = factor_snippet_stage0 + "0"
+                                nzeros = nzeros + 1
+                            first_element_stage0 = "A"
+                            if nzeros == nones:
+                                nones = 0
+                                nzeros = 0
+                                factor_snippet_stage1 = ""
+                        stage0 = "A"
             elif len(Q) == 0:
-                if t == 1:
-                    if prev_stage1 == "":
-                        prev_stage1 = "S"
-                        print(prev_stage1)
-                    elif prev_stage1 == "A":
-                        prev_stage1 = "S"
-                        print(prev_stage1)
-                    elif prev_stage1 == "S":
-                        prev_stage1 = "A"
-                        print(prev_stage1)
-                elif t == 0:
-                    if prev_stage0 == "":
-                        prev_stage0 = "S"
-                        print(prev_stage0)
-                    elif prev_stage0 == "S":
-                        prev_stage0 = "A"
-                        print(prev_stage0)
-                    elif prev_stage0 == "A":
-                        prev_stage0 = "S"
-                        print(prev_stage0)
-            ctr = (ctr + 1) % 2
-            if ctr == 0:
-                #input(tuple1)
-                tuple1 = []
+                if stage1 == "":
+                    stage1 = "S"
+                    print(stage1)
+                elif stage1 == "A":
+                    stage1 = "S"
+                    print(stage1)
+                elif stage1 == "S":
+                    stage1 = "A"
+                    print(stage1)
             t = 1 - t
+        print(factor_snippet_stage0)
+        print(factor_snippet_stage1)
         input("End of stage")
     return factor1, factor2
 
