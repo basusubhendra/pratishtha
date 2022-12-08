@@ -246,9 +246,9 @@ def factorize(stages):
                            elif h == 1:
                                factor2.append(factor_snippet_stage0)
                                h = 1 - h
-                            nzeros = 0
-                            nones = 0
-                            factor_snippet_stage0 = ""
+                           nzeros = 0
+                           nones = 0
+                           factor_snippet_stage0 = ""
                        stage0 = "S"
                        print(stage0)
                 elif Q1 != Q0:
