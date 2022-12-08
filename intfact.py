@@ -261,7 +261,6 @@ def factorize(stages):
                                 nzeros_stage1 = nzeros_stage1 + 1
                                 dirty_bit = 1
                                 current_bit_stage1 = "0"
-                            elif first_element_stage1 == "A":
                             first_element_stage1 = "A"
                         stage1 = "A"
                         print(stage1)
