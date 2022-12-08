@@ -169,9 +169,8 @@ def factorize_helper(stage, param, parity_left, parity_right, q0, q):
     return
 
 def factorize(stages):
-    factor1 = []
-    factor2 = []
-    h = 0
+    factor1 = "" 
+    factor2 =  ""
     q = Queue()
     q0 = Queue()
     stage1 = ""
@@ -182,9 +181,10 @@ def factorize(stages):
     parity_right2 = 0
     first_element_stage0 = ""
     first_element_stage1 = ""
-    factor_snippet_stage0 = ""
-    nzeros = 0
-    nones = 0
+    nzeros_stage1 = 0
+    nones_stage1 = 0
+    nzeros_stage0 = 0
+    nones_stage0 = 0
     for stage in stages:
         t1 = Thread(target = factorize_helper, args = (stage, 1, parity_left1, parity_right1, q0, q, ))
         t2 = Thread(target = factorize_helper, args = (stage, 0, parity_left2, parity_right2, q0, q, ))
@@ -204,6 +204,8 @@ def factorize(stages):
             t = 1 - t
         t = 0
         dirty_bit = 0
+        current_bit_stage0 = ""
+        current_bit_stage1 = ""
         while not q.empty():
             Q = q.get()
             if len(Q) > 0:
@@ -213,10 +215,10 @@ def factorize(stages):
                     if t == 0:
                        if stage1 == "S":
                            if first_element_stage1 == "S":
-                               nzeros = nzeros + 1
+                               nzeros_stage1 = nzeros_stage1 + 1
                                dirty_bit = 1
                            elif first_element_stage1 == "A":
-                               nones = nones + 1
+                               nones_stage1 = nones_stage1 + 1
                                dirty_bit = 1
                            first_element_stage1 = "S"
                        if stage1 == "":
@@ -226,31 +228,24 @@ def factorize(stages):
                     elif t == 1:
                        if stage0 == "S":
                            if first_element_stage0 == "S":
-                               factor_snippet_stage0 = factor_snippet_stage0 + "0"
+                               nzeros_stage0 = nzeros_stage0 + 1
+                               current_bit_stage0 = "1"
                                dirty_bit = dirty_bit + 1
                            elif first_element_stage0 == "A":
-                               factor_snippet_stage0 = factor_snippet_stage0 + "1"
+                               nones_stage0 = nones_stage0 + 1
                                dirty_bit = dirty_bit + 1
+                               current_bit_stage0 = "0"
                            first_element_stage0 = "S"
                        if stage0 == "":
                            first_element_stage0 = "S"
-                       if nzeros > 0 and nzeros == nones:
-                           nzeros = 0
-                           nones = 0
-                           factor_snippet_stage0 = ""
                        if dirty_bit == 2:
                            dirty_bit = 0
-                           if h == 0:
-                               factor1.append(factor_snippet_stage0)
-                               h = 1 - h
-                               factor_snippet_stage0 = ""
-                           elif h == 1:
-                               factor2.append(factor_snippet_stage0)
-                               h = 1 - h
-                               factor_snippet_stage0 = ""
-                           nzeros = 0
-                           nones = 0
-                           factor_snippet_stage0 = ""
+                           if nones_stage1 == nzeros_stage1:
+                               factor1 = factor1 + str(current_bit_stage1)
+                               current_bit_stage1 = ""
+                           if nones_stage0 == nzeros_stage0:
+                               factor2 = factor2 + str(current_bit_stage0)
+                               current_bit_stage0 = ""
                        stage0 = "S"
                        print(stage0)
                 elif Q1 != Q0:
@@ -268,28 +263,22 @@ def factorize(stages):
                     elif t == 1:
                         if stage0 == "A":
                             if first_element_stage0 == "S":
-                                factor_snippet_stage0 = factor_snippet_stage0 + "1"
+                                nones_stage0 = nones_stage0 + 1
+                                current_bit_stage0 = "1"
                                 dirty_bit = dirty_bit + 1
                             elif first_element_stage0 == "A":
-                                factor_snippet_stage0 = factor_snippet_stage0 + "0"
+                                nzeros_stage0 = nzeros_stage0 + 1
+                                current_bit_stage1 = "0"
                                 dirty_bit = dirty_bit + 1
                             first_element_stage0 = "A"
-                        if nzeros > 0 and nzeros == nones:
-                            nones = 0
-                            nzeros = 0
-                            factor_snippet_stage0 = ""
                         if dirty_bit == 2:
                            dirty_bit = 0
-                           if h == 0:
-                                factor1.append(factor_snippet_stage0)
-                                h = 1 - h
-                                input([nones, nzeros])
-                                factor_snippet_stage0 = ""
-                           elif h == 1:
-                                factor2.append(factor_snippet_stage0)
-                                h = 1 - h
-                                input([nones, nzeros])
-                                factor_snippet_stage0 = ""
+                           if nones_stage1 == nzeros_stage1:
+                               factor1 = factor1 + str(current_bit_stage1)
+                               current_bit_stage1 = ""
+                           if nones_stage0 == nzeros_stage0:
+                               factor2 = factor2 + str(current_bit_stage0)
+                               current_bit_stage0 = ""
                         stage0 = "A"
                         print(stage0)
             elif len(Q) == 0:
