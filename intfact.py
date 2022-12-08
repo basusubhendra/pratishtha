@@ -256,8 +256,10 @@ def factorize(stages):
                         if stage1 == "A":
                             if first_element_stage1 == "S":
                                 nones = nones + 1
+                                dirty_bit = 1
                             elif first_element_stage1 == "A":
                                 nzeros = nzeros + 1
+                                dirty_bit = 1
                             first_element_stage1 = "A"
                         stage1 = "A"
                         print(stage1)
@@ -265,8 +267,10 @@ def factorize(stages):
                         if stage0 == "A":
                             if first_element_stage0 == "S":
                                 factor_snippet_stage0 = factor_snippet_stage0 + "1"
+                                dirty_bit = dirty_bit + 1
                             elif first_element_stage0 == "A":
                                 factor_snippet_stage0 = factor_snippet_stage0 + "0"
+                                dirty_bit = dirty_bit + 1
                             first_element_stage0 = "A"
                         if nzeros > 0 and nzeros == nones:
                             nones = 0
