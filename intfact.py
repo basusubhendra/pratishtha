@@ -103,6 +103,8 @@ def factorize(triplets, num):
             if triplet[1] != "00.0":
                 mask = triplet[1][ctr*3:ctr*3+5]
                 residue_set = _mask_(pivot, mask, residue_set)
+            elif triplet[1] == "00.0":
+                residue_set = []
             if len(residue_set) == 0:
                 pp_set.append(pp)
                 ee_set.append(ee)
